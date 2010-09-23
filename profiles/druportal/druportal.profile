@@ -60,9 +60,11 @@ function druportal_profile_tasks(&$task, $url) {
     // Set up all the things a default installation profile has.
     require_once 'profiles/default/default.profile';
     default_profile_tasks($task, $url);
-
-    // Add SkyPortal equivalent roles.
-    //db_query("INSERT INTO {role} (name) VALUES ('%s')", 'site administrator');
+    
+    // Make admin role have permissions for module that may have been enabled
+    // after adminrole
+    require_once 'profiles/druportal/modules/adminrole/adminrole.module';
+    adminrole_update_permissions();
 
     // Set $task to next task so the installer UI will be correct.
     $task = 'druportal-import';
@@ -144,6 +146,60 @@ function druportal_import_select($form_state, $url) {
     '#type' => 'checkbox',
     '#title' => 'Members',
     '#default_value' => 1,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['forums'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Forums',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['downloads'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Downloads',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['pictures'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Pictures',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['articles'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Articles',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['classifieds'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Classifieds',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['links'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Links',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['calendar'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Calendar',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['blogs'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Blogs',
+    '#default_value' => 0,
+    '#disabled' => TRUE,
+  );
+  $form['druportal_import_features']['news'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'News',
+    '#default_value' => 0,
     '#disabled' => TRUE,
   );
   
