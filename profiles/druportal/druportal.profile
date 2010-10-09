@@ -28,9 +28,13 @@ function druportal_profile_modules() {
   return array(
     // Enable optional core modules.
     'dblog', 'help', 'taxonomy', 'search',
-    
+
     // Druportal Included Modules
     'admin_menu', 'adminrole', 'content', 'views',
+
+    // Enable Modules Necessary for SkyPortal core functionality
+    'profile', 
+    
   );
 }
 
@@ -65,6 +69,36 @@ function druportal_profile_tasks(&$task, $url) {
     // after adminrole
     require_once 'profiles/druportal/modules/adminrole/adminrole.module';
     adminrole_update_permissions();
+
+    // Create the profile fields for members
+    $sql = <<<EOL
+INSERT INTO `profile_fields` (`fid`, `title`, `name`, `explanation`, `category`, `page`, `type`, `weight`, `required`, `register`, `visibility`, `autocomplete`, `options`) VALUES
+(null, 'Firstname', 'profile_basics_firstname', '', 'Basics', '', 'textfield', -9, 0, 0, 2, 0, ''),
+(null, 'Surname', 'profile_basics_surname', '', 'Basics', '', 'textfield', -8, 0, 0, 2, 0, ''),
+(null, 'City', 'profile_basics_city', '', 'Basics', '', 'textfield', -7, 0, 0, 2, 0, ''),
+(null, 'Homepage', 'profile_links_homepage', '', 'Links', '', 'url', 0, 0, 0, 2, 0, ''),
+(null, 'Cool Links', 'profile_links_cool_1', '', 'Links', '', 'url', 0, 0, 0, 2, 0, ''),
+(null, 'Other', 'profile_links_cool_2', '', 'Links', '', 'url', 0, 0, 0, 2, 0, ''),
+(null, 'Birthdate', 'profile_basics_birthdate', '', 'Basics', '', 'date', -3, 0, 0, 2, 0, ''),
+(null, 'State', 'profile_basics_state', '', 'Basics', '', 'textfield', -6, 0, 0, 2, 0, ''),
+(null, 'Zip Code', 'profile_basics_zip', '', 'Basics', '', 'textfield', -5, 0, 0, 2, 0, ''),
+(null, 'Country', 'profile_basics_country', '', 'Basics', '', 'textfield', -4, 0, 0, 2, 0, ''),
+(null, 'Sex', 'profile_basics_sex', '', 'Basics', '', 'selection', -2, 0, 0, 2, 0, 'Male\r\nFemale'),
+(null, 'Marital Status', 'profile_basics_marrital_status', '', 'Basics', '', 'textfield', -1, 0, 0, 2, 0, ''),
+(null, 'Occupation', 'profile_basics_occupation', '', 'Basics', '', 'textfield', 0, 0, 0, 2, 0, ''),
+(null, 'Gold', 'profile_basics_gold', '', 'Basics', '', 'textfield', 1, 0, 0, 4, 0, ''),
+(null, 'Rep Points', 'profile_basics_rep', '', 'Basics', '', 'textfield', 2, 0, 0, 4, 0, ''),
+(null, 'Title', 'profile_basics_title', '', 'Basics', '', 'textfield', -10, 0, 0, 4, 0, ''),
+(null, 'MSN', 'profile_contact_msn', '', 'Contact Info', '', 'textfield', 0, 0, 0, 2, 0, ''),
+(null, 'ICQ', 'profile_contact_icq', '', 'Contact Info', '', 'textfield', 0, 0, 0, 2, 0, ''),
+(null, 'Yahoo IM', 'profile_contact_yahoo', '', 'Contact Info', '', 'textfield', 0, 0, 0, 2, 0, ''),
+(null, 'AIM', 'profile_contact_aim', '', 'Contact Info', '', 'textfield', 0, 0, 0, 2, 0, ''),
+(null, 'Favorite Person', 'profile_more_fav_person', '', 'More About Me', '', 'textarea', 0, 0, 0, 2, 0, ''),
+(null, 'Favorite Food', 'profile_more_fav_food', '', 'More About Me', '', 'textarea', 0, 0, 0, 2, 0, ''),
+(null, 'Hobbies', 'profile_more_hobbies', '', 'More About Me', '', 'textarea', 0, 0, 0, 2, 0, ''),
+(null, 'Comments', 'profile_more_comments', '', 'More About Me', '', 'textarea', 0, 0, 0, 2, 0, '');
+EOL;
+    db_query($sql);
 
     // Set $task to next task so the installer UI will be correct.
     $task = 'druportal-import';
