@@ -48,17 +48,29 @@ function druportal_menu() {
 function druportal_migrate_prepare_user(&$user, $tblinfo, $row)
 {
   watchdog('druportal', print_r(array($user, $tblinfo, $row), true));
-  $user['created'] = _druportal_sp_date_convert($row->sp_portal_members_M_DATE);
-  $user['access'] = _druportal_sp_date_convert($row->sp_portal_members_M_LASTHEREDATE);
-  $user['login'] = $user['access'];
 
-  if (isset($row->sp_portal_members_M_AGE) && trim($row->sp_portal_members_M_AGE) !== '') {
-    // Convert date into array
-    $bd = explode('/', $row->sp_portal_members_M_AGE);
-    $birthdate = array('month' => $bd[0], 'day' => $bd[1], 'year' => $bd[2]);
-    $row->profile_fields['Basics']['profile_basics_birthdate'] = $birthdate;
-  } else {
-    $row->profile_fields['Basics']['profile_basics_birthdate'] = array();
+  if ($tblinfo->machine_name == 'sp_portal_members') {
+    $user['created'] = _druportal_sp_date_convert($row->sp_portal_members_M_DATE);
+    $user['access'] = _druportal_sp_date_convert($row->sp_portal_members_M_LASTHEREDATE);
+    $user['login'] = $user['access'];
+
+    // Need to clear out empty strings
+    if (isset($row->profile_fields) && is_array($row->profile_fields)) {
+      foreach ($row->profile_fields as $category => &$fields) {
+        foreach ($fields as &$field) {
+          $field = trim($field);
+        }
+      }
+    }
+
+    if (isset($row->sp_portal_members_M_AGE) && trim($row->sp_portal_members_M_AGE) !== '') {
+      // Convert date into array
+      $bd = explode('/', $row->sp_portal_members_M_AGE);
+      $birthdate = array('month' => $bd[0], 'day' => $bd[1], 'year' => $bd[2]);
+      $row->profile_fields['Basics']['profile_basics_birthdate'] = $birthdate;
+    } else {
+      $row->profile_fields['Basics']['profile_basics_birthdate'] = array();
+    }
   }
 }
 
