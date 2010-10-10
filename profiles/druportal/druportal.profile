@@ -31,10 +31,11 @@ function druportal_profile_modules() {
 
     // Druportal Included Modules
     'admin_menu', 'adminrole', 'content', 'views', 'vertical_tabs',
-    'features', 
+    'features', 'token', 
 
     // Enable Modules Necessary for SkyPortal core functionality
-    'profile', 'scheduler', 'privatemsg', 'druportal_announcements'
+    'profile', 'scheduler', 'privatemsg', 'druportal_announcements',
+    'druportal_welcome', 
     
   );
 }

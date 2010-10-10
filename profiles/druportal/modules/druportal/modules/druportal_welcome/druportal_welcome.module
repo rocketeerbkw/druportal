@@ -1,0 +1,3 @@
+<?php
+
+include_once('druportal_welcome.features.inc');
