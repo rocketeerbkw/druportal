@@ -103,11 +103,12 @@ EOL;
     db_query($sql);
 
     // Set $task to next task so the installer UI will be correct.
-    $task = 'druportal-import';
-    drupal_set_title(st('Import Data'));
+    //$task = 'druportal-import';
+    //drupal_set_title(st('Import Data'));
     
-    // Ask what info they want to import
-    return drupal_get_form('druportal_import_select', $url);
+    //// Ask what info they want to import
+    //return drupal_get_form('druportal_import_select', $url);
+    $task = 'profile-finished';
   }
 
   if ($task == 'druportal-import') {
