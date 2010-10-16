@@ -137,6 +137,35 @@ function druportal_migrate_complete_term(&$term, $tblinfo, $row) {
 }
 
 /**
+ * Implementation of hook_migrate_prepare_privatemsg().
+ **/
+function druportal_migrate_prepare_privatemsg(&$msg, $tblinfo, $row)
+{
+  if ($tblinfo->machine_name == 'sp_portal_pm') {
+    // Get the correct UID for author and recipient from the members
+    // mapping table
+    $authorId = db_result(db_query("SELECT destid FROM {migrate_map_sp_portal_members} WHERE sourceid = %d", $row->sp_portal_pm_M_FROM));
+    $msg->author = ($authorId > 0 ? $authorId : 1);
+    $recipientId = db_result(db_query("SELECT destid FROM {migrate_map_sp_portal_members} WHERE sourceid = %d", $row->sp_portal_pm_M_TO));
+    $msg->recipient = ($recipientId > 0 ? $recipientId : 1);
+
+    // Fix timestamp
+    $msg->timestamp = _druportal_sp_date_convert($row->sp_portal_pm_M_SENT);
+
+    // Flip READ bit to correlate with NEW bit
+    $read = (int) $row->sp_portal_pm_M_READ;
+    $msg->is_new = $read ? 0 : 1;
+
+    // The privatemsg migrate module runs it's own prepare function
+    // It's imperative that our function run before it, so check
+    // if it's been run and override if it has
+    if (isset($msg->new_thread)) {
+      //privatemsg_migrate_prepare_privatemsg($msg, $tblinfo, $row);
+    }
+  }
+}
+
+/**
  * Convert dates stored in Skyportal to unix epoch timestamp
  **/
 function _druportal_sp_date_convert($date) {
