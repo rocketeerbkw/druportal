@@ -27,7 +27,7 @@ function druportal_views_default_views_forums()
   $view->base_table = 'sp_portal_category';
   $view->is_cacheable = FALSE;
   $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'sp_portal_category', 'default');
   $handler->override_option('fields', array(
     'CAT_ID' => array(
@@ -141,7 +141,7 @@ function druportal_views_default_views_forums()
   $view->base_table = 'sp_portal_forum';
   $view->is_cacheable = FALSE;
   $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'sp_portal_forum', 'default');
   $handler->override_option('fields', array(
     'CAT_ID' => array(
@@ -385,7 +385,7 @@ function druportal_views_default_views_forums()
   $view->base_table = 'sp_portal_reply';
   $view->is_cacheable = FALSE;
   $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'sp_portal_reply', 'default');
   $handler->override_option('fields', array(
     'CAT_ID' => array(
@@ -590,7 +590,7 @@ function druportal_views_default_views_forums()
   $view->base_table = 'sp_portal_topics';
   $view->is_cacheable = FALSE;
   $view->api_version = 2;
-  $view->disabled = FALSE; /* Edit this to true to make a default view disabled initially */
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
   $handler = $view->new_display('default', 'sp_portal_topics', 'default');
   $handler->override_option('fields', array(
     'CAT_ID' => array(
