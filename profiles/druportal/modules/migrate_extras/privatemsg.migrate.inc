@@ -74,7 +74,7 @@ function privatemsg_migrate_import_privatemsg($tblinfo, $row) {
   }
   
   timer_start('relationship_prepare hooks');
-    $errors = migrate_invoke_all('prepare_privatemsg', $msg, $tblinfo, $row);
+    $errors = migrate_destination_invoke_all('prepare_privatemsg', $msg, $tblinfo, $row);
   timer_stop('relationship_prepare hooks');
   
   $success = TRUE;
@@ -97,7 +97,7 @@ function privatemsg_migrate_import_privatemsg($tblinfo, $row) {
     }
     // Call completion hooks, for any processing which needs to be done after node_save
     timer_start('privatemsg_completion hooks');
-      $errors = array_merge($errors, migrate_invoke_all('complete_privatemsg', $msg, $tblinfo, $row));
+      $errors = array_merge($errors, migrate_destination_invoke_all('complete_privatemsg', $msg, $tblinfo, $row));
     timer_stop('privatemsg_completion hooks');
     
   }
