@@ -34,13 +34,13 @@ function druportal_menu() {
 /**
  * Implementaiton of hook_views_api().
  **/
-//function druportal_views_api()
-//{
-  //$data = array(
-    //'api' => 2.0
-  //);
-  //return $data;
-//}
+function druportal_views_api()
+{
+  $data = array(
+    'api' => 2.0
+  );
+  return $data;
+}
 
 /**
  * Implementation of hook_migrate_prepare_user().
