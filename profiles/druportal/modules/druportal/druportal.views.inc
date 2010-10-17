@@ -8,6 +8,1201 @@ function druportal_views_data()
   $data = array();
 
   $data = array_merge($data, druportal_views_data_forums());
+  $data = array_merge($data, druportal_views_data_members());
+
+  return $data;
+}
+
+/**
+ * Provide all the data necessary for hook_views_data()
+ * to understand member import tables
+ **/
+function druportal_views_data_members()
+{
+  $data = array();
+
+  $data['sp_portal_members'] = array(
+    'MEMBER_ID' => array(
+      'title' => t('MEMBER_ID'),
+      'help' => t('sp_portal_members.MEMBER_ID'),
+      'field' => array(
+        'handler' => 'views_handler_field_numeric',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_numeric',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_numeric',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_AGE' => array(
+      'title' => t('M_AGE'),
+      'help' => t('sp_portal_members.M_AGE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_AIM' => array(
+      'title' => t('M_AIM'),
+      'help' => t('sp_portal_members.M_AIM'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_AVATAR_URL' => array(
+      'title' => t('M_AVATAR_URL'),
+      'help' => t('sp_portal_members.M_AVATAR_URL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_BIO' => array(
+      'title' => t('M_BIO'),
+      'help' => t('sp_portal_members.M_BIO'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_CITY' => array(
+      'title' => t('M_CITY'),
+      'help' => t('sp_portal_members.M_CITY'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_COUNTRY' => array(
+      'title' => t('M_COUNTRY'),
+      'help' => t('sp_portal_members.M_COUNTRY'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_DATE' => array(
+      'title' => t('M_DATE'),
+      'help' => t('sp_portal_members.M_DATE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_DEFAULT_VIEW' => array(
+      'title' => t('M_DEFAULT_VIEW'),
+      'help' => t('sp_portal_members.M_DEFAULT_VIEW'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_EMAIL' => array(
+      'title' => t('M_EMAIL'),
+      'help' => t('sp_portal_members.M_EMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_FIRSTNAME' => array(
+      'title' => t('M_FIRSTNAME'),
+      'help' => t('sp_portal_members.M_FIRSTNAME'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_GLOW' => array(
+      'title' => t('M_GLOW'),
+      'help' => t('sp_portal_members.M_GLOW'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_GOLD' => array(
+      'title' => t('M_GOLD'),
+      'help' => t('sp_portal_members.M_GOLD'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_GTOTAL' => array(
+      'title' => t('M_GTOTAL'),
+      'help' => t('sp_portal_members.M_GTOTAL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_HIDE_EMAIL' => array(
+      'title' => t('M_HIDE_EMAIL'),
+      'help' => t('sp_portal_members.M_HIDE_EMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_HOBBIES' => array(
+      'title' => t('M_HOBBIES'),
+      'help' => t('sp_portal_members.M_HOBBIES'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_HOMEPAGE' => array(
+      'title' => t('M_HOMEPAGE'),
+      'help' => t('sp_portal_members.M_HOMEPAGE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_ICQ' => array(
+      'title' => t('M_ICQ'),
+      'help' => t('sp_portal_members.M_ICQ'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_IP' => array(
+      'title' => t('M_IP'),
+      'help' => t('sp_portal_members.M_IP'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_KEY' => array(
+      'title' => t('M_KEY'),
+      'help' => t('sp_portal_members.M_KEY'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LAST_IP' => array(
+      'title' => t('M_LAST_IP'),
+      'help' => t('sp_portal_members.M_LAST_IP'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LASTHEREDATE' => array(
+      'title' => t('M_LASTHEREDATE'),
+      'help' => t('sp_portal_members.M_LASTHEREDATE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LASTNAME' => array(
+      'title' => t('M_LASTNAME'),
+      'help' => t('sp_portal_members.M_LASTNAME'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LASTPOSTDATE' => array(
+      'title' => t('M_LASTPOSTDATE'),
+      'help' => t('sp_portal_members.M_LASTPOSTDATE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LEVEL' => array(
+      'title' => t('M_LEVEL'),
+      'help' => t('sp_portal_members.M_LEVEL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LINK1' => array(
+      'title' => t('M_LINK1'),
+      'help' => t('sp_portal_members.M_LINK1'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LINK2' => array(
+      'title' => t('M_LINK2'),
+      'help' => t('sp_portal_members.M_LINK2'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LNEWS' => array(
+      'title' => t('M_LNEWS'),
+      'help' => t('sp_portal_members.M_LNEWS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LOSSES' => array(
+      'title' => t('M_LOSSES'),
+      'help' => t('sp_portal_members.M_LOSSES'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_MARSTATUS' => array(
+      'title' => t('M_MARSTATUS'),
+      'help' => t('sp_portal_members.M_MARSTATUS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_MSN' => array(
+      'title' => t('M_MSN'),
+      'help' => t('sp_portal_members.M_MSN'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_NAME' => array(
+      'title' => t('M_NAME'),
+      'help' => t('sp_portal_members.M_NAME'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_NEWEMAIL' => array(
+      'title' => t('M_NEWEMAIL'),
+      'help' => t('sp_portal_members.M_NEWEMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_OCCUPATION' => array(
+      'title' => t('M_OCCUPATION'),
+      'help' => t('sp_portal_members.M_OCCUPATION'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PAGE_VIEWS' => array(
+      'title' => t('M_PAGE_VIEWS'),
+      'help' => t('sp_portal_members.M_PAGE_VIEWS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PASSWORD' => array(
+      'title' => t('M_PASSWORD'),
+      'help' => t('sp_portal_members.M_PASSWORD'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PHOTO_URL' => array(
+      'title' => t('M_PHOTO_URL'),
+      'help' => t('sp_portal_members.M_PHOTO_URL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PMEMAIL' => array(
+      'title' => t('M_PMEMAIL'),
+      'help' => t('sp_portal_members.M_PMEMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PMRECEIVE' => array(
+      'title' => t('M_PMRECEIVE'),
+      'help' => t('sp_portal_members.M_PMRECEIVE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_POSTS' => array(
+      'title' => t('M_POSTS'),
+      'help' => t('sp_portal_members.M_POSTS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_QUOTE' => array(
+      'title' => t('M_QUOTE'),
+      'help' => t('sp_portal_members.M_QUOTE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_RECEIVE_EMAIL' => array(
+      'title' => t('M_RECEIVE_EMAIL'),
+      'help' => t('sp_portal_members.M_RECEIVE_EMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_RECMAIL' => array(
+      'title' => t('M_RECMAIL'),
+      'help' => t('sp_portal_members.M_RECMAIL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_REP' => array(
+      'title' => t('M_REP'),
+      'help' => t('sp_portal_members.M_REP'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_RNAME' => array(
+      'title' => t('M_RNAME'),
+      'help' => t('sp_portal_members.M_RNAME'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_RTOTAL' => array(
+      'title' => t('M_RTOTAL'),
+      'help' => t('sp_portal_members.M_RTOTAL'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_SEX' => array(
+      'title' => t('M_SEX'),
+      'help' => t('sp_portal_members.M_SEX'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_SIG' => array(
+      'title' => t('M_SIG'),
+      'help' => t('sp_portal_members.M_SIG'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_STATE' => array(
+      'title' => t('M_STATE'),
+      'help' => t('sp_portal_members.M_STATE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_STATUS' => array(
+      'title' => t('M_STATUS'),
+      'help' => t('sp_portal_members.M_STATUS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_SUBSCRIPTION' => array(
+      'title' => t('M_SUBSCRIPTION'),
+      'help' => t('sp_portal_members.M_SUBSCRIPTION'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_TITLE' => array(
+      'title' => t('M_TITLE'),
+      'help' => t('sp_portal_members.M_TITLE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_USERNAME' => array(
+      'title' => t('M_USERNAME'),
+      'help' => t('sp_portal_members.M_USERNAME'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_WINS' => array(
+      'title' => t('M_WINS'),
+      'help' => t('sp_portal_members.M_WINS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_YAHOO' => array(
+      'title' => t('M_YAHOO'),
+      'help' => t('sp_portal_members.M_YAHOO'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_ZIP' => array(
+      'title' => t('M_ZIP'),
+      'help' => t('sp_portal_members.M_ZIP'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'THEME_ID' => array(
+      'title' => t('THEME_ID'),
+      'help' => t('sp_portal_members.THEME_ID'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_SHOW_BIRTHDAY' => array(
+      'title' => t('M_SHOW_BIRTHDAY'),
+      'help' => t('sp_portal_members.M_SHOW_BIRTHDAY'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PMSTATUS' => array(
+      'title' => t('M_PMSTATUS'),
+      'help' => t('sp_portal_members.M_PMSTATUS'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_PMBLACKLIST' => array(
+      'title' => t('M_PMBLACKLIST'),
+      'help' => t('sp_portal_members.M_PMBLACKLIST'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_DONATE' => array(
+      'title' => t('M_DONATE'),
+      'help' => t('sp_portal_members.M_DONATE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LANG' => array(
+      'title' => t('M_LANG'),
+      'help' => t('sp_portal_members.M_LANG'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_LCID' => array(
+      'title' => t('M_LCID'),
+      'help' => t('sp_portal_members.M_LCID'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_TIME_OFFSET' => array(
+      'title' => t('M_TIME_OFFSET'),
+      'help' => t('sp_portal_members.M_TIME_OFFSET'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'M_TIME_TYPE' => array(
+      'title' => t('M_TIME_TYPE'),
+      'help' => t('sp_portal_members.M_TIME_TYPE'),
+      'field' => array(
+        'handler' => 'views_handler_field',
+        'click sortable' => TRUE,
+      ),
+      'filter' => array(
+        'handler' => 'views_handler_filter_string',
+        'allow empty' => TRUE,
+      ),
+      'argument' => array(
+        'handler' => 'views_handler_argument_string',
+      ),
+      'sort' => array(
+        'handler' => 'views_handler_sort',
+      ),
+    ),
+    'table' => array(
+      'base' => array(
+        'field' => 'MEMBER_ID',
+        'title' => t('Database table sp_portal_members'),
+        'help' => 'sp_portal_members.M_TIME_TYPE',
+        'weight' => 10,
+        'database' => 'default',
+      ),
+      'group' => t('sp_portal_members'),
+    ),
+  );
 
   return $data;
 }

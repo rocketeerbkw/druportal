@@ -8,6 +8,921 @@ function druportal_views_default_views()
   $views = array();
 
   $views = array_merge($views, druportal_views_default_views_forums());
+  $views = array_merge($views, druportal_views_default_views_members());
+
+  return $views;
+}
+
+function druportal_views_default_views_members()
+{
+  $views = array();
+
+  /*
+   * View 'sp_portal_members'
+   */
+  $view = new view;
+  $view->name = 'sp_portal_members';
+  $view->description = 'sp_portal_members';
+  $view->tag = 'tw';
+  $view->view_php = '';
+  $view->base_table = 'sp_portal_members';
+  $view->is_cacheable = FALSE;
+  $view->api_version = 2;
+  $view->disabled = TRUE; /* Edit this to true to make a default view disabled initially */
+  $handler = $view->new_display('default', 'sp_portal_members', 'default');
+  $handler->override_option('fields', array(
+    'MEMBER_ID' => array(
+      'id' => 'MEMBER_ID',
+      'table' => 'sp_portal_members',
+      'field' => 'MEMBER_ID',
+      'label' => 'MEMBER_ID',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_AGE' => array(
+      'id' => 'M_AGE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_AGE',
+      'label' => 'M_AGE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_AIM' => array(
+      'id' => 'M_AIM',
+      'table' => 'sp_portal_members',
+      'field' => 'M_AIM',
+      'label' => 'M_AIM',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_AVATAR_URL' => array(
+      'id' => 'M_AVATAR_URL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_AVATAR_URL',
+      'label' => 'M_AVATAR_URL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_BIO' => array(
+      'id' => 'M_BIO',
+      'table' => 'sp_portal_members',
+      'field' => 'M_BIO',
+      'label' => 'M_BIO',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_CITY' => array(
+      'id' => 'M_CITY',
+      'table' => 'sp_portal_members',
+      'field' => 'M_CITY',
+      'label' => 'M_CITY',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_COUNTRY' => array(
+      'id' => 'M_COUNTRY',
+      'table' => 'sp_portal_members',
+      'field' => 'M_COUNTRY',
+      'label' => 'M_COUNTRY',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_DATE' => array(
+      'id' => 'M_DATE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_DATE',
+      'label' => 'M_DATE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_DEFAULT_VIEW' => array(
+      'id' => 'M_DEFAULT_VIEW',
+      'table' => 'sp_portal_members',
+      'field' => 'M_DEFAULT_VIEW',
+      'label' => 'M_DEFAULT_VIEW',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_EMAIL' => array(
+      'id' => 'M_EMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_EMAIL',
+      'label' => 'M_EMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_FIRSTNAME' => array(
+      'id' => 'M_FIRSTNAME',
+      'table' => 'sp_portal_members',
+      'field' => 'M_FIRSTNAME',
+      'label' => 'M_FIRSTNAME',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_GLOW' => array(
+      'id' => 'M_GLOW',
+      'table' => 'sp_portal_members',
+      'field' => 'M_GLOW',
+      'label' => 'M_GLOW',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_GOLD' => array(
+      'id' => 'M_GOLD',
+      'table' => 'sp_portal_members',
+      'field' => 'M_GOLD',
+      'label' => 'M_GOLD',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_GTOTAL' => array(
+      'id' => 'M_GTOTAL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_GTOTAL',
+      'label' => 'M_GTOTAL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_HIDE_EMAIL' => array(
+      'id' => 'M_HIDE_EMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_HIDE_EMAIL',
+      'label' => 'M_HIDE_EMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_HOBBIES' => array(
+      'id' => 'M_HOBBIES',
+      'table' => 'sp_portal_members',
+      'field' => 'M_HOBBIES',
+      'label' => 'M_HOBBIES',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_HOMEPAGE' => array(
+      'id' => 'M_HOMEPAGE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_HOMEPAGE',
+      'label' => 'M_HOMEPAGE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_ICQ' => array(
+      'id' => 'M_ICQ',
+      'table' => 'sp_portal_members',
+      'field' => 'M_ICQ',
+      'label' => 'M_ICQ',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_IP' => array(
+      'id' => 'M_IP',
+      'table' => 'sp_portal_members',
+      'field' => 'M_IP',
+      'label' => 'M_IP',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_KEY' => array(
+      'id' => 'M_KEY',
+      'table' => 'sp_portal_members',
+      'field' => 'M_KEY',
+      'label' => 'M_KEY',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LAST_IP' => array(
+      'id' => 'M_LAST_IP',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LAST_IP',
+      'label' => 'M_LAST_IP',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LASTHEREDATE' => array(
+      'id' => 'M_LASTHEREDATE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LASTHEREDATE',
+      'label' => 'M_LASTHEREDATE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LASTNAME' => array(
+      'id' => 'M_LASTNAME',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LASTNAME',
+      'label' => 'M_LASTNAME',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LASTPOSTDATE' => array(
+      'id' => 'M_LASTPOSTDATE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LASTPOSTDATE',
+      'label' => 'M_LASTPOSTDATE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LEVEL' => array(
+      'id' => 'M_LEVEL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LEVEL',
+      'label' => 'M_LEVEL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LINK1' => array(
+      'id' => 'M_LINK1',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LINK1',
+      'label' => 'M_LINK1',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LINK2' => array(
+      'id' => 'M_LINK2',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LINK2',
+      'label' => 'M_LINK2',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LNEWS' => array(
+      'id' => 'M_LNEWS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LNEWS',
+      'label' => 'M_LNEWS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LOSSES' => array(
+      'id' => 'M_LOSSES',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LOSSES',
+      'label' => 'M_LOSSES',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_MARSTATUS' => array(
+      'id' => 'M_MARSTATUS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_MARSTATUS',
+      'label' => 'M_MARSTATUS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_MSN' => array(
+      'id' => 'M_MSN',
+      'table' => 'sp_portal_members',
+      'field' => 'M_MSN',
+      'label' => 'M_MSN',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_NAME' => array(
+      'id' => 'M_NAME',
+      'table' => 'sp_portal_members',
+      'field' => 'M_NAME',
+      'label' => 'M_NAME',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_NEWEMAIL' => array(
+      'id' => 'M_NEWEMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_NEWEMAIL',
+      'label' => 'M_NEWEMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_OCCUPATION' => array(
+      'id' => 'M_OCCUPATION',
+      'table' => 'sp_portal_members',
+      'field' => 'M_OCCUPATION',
+      'label' => 'M_OCCUPATION',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PAGE_VIEWS' => array(
+      'id' => 'M_PAGE_VIEWS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PAGE_VIEWS',
+      'label' => 'M_PAGE_VIEWS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PASSWORD' => array(
+      'id' => 'M_PASSWORD',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PASSWORD',
+      'label' => 'M_PASSWORD',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PHOTO_URL' => array(
+      'id' => 'M_PHOTO_URL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PHOTO_URL',
+      'label' => 'M_PHOTO_URL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PMEMAIL' => array(
+      'id' => 'M_PMEMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PMEMAIL',
+      'label' => 'M_PMEMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PMRECEIVE' => array(
+      'id' => 'M_PMRECEIVE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PMRECEIVE',
+      'label' => 'M_PMRECEIVE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_POSTS' => array(
+      'id' => 'M_POSTS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_POSTS',
+      'label' => 'M_POSTS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_QUOTE' => array(
+      'id' => 'M_QUOTE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_QUOTE',
+      'label' => 'M_QUOTE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_RECEIVE_EMAIL' => array(
+      'id' => 'M_RECEIVE_EMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_RECEIVE_EMAIL',
+      'label' => 'M_RECEIVE_EMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_RECMAIL' => array(
+      'id' => 'M_RECMAIL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_RECMAIL',
+      'label' => 'M_RECMAIL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_REP' => array(
+      'id' => 'M_REP',
+      'table' => 'sp_portal_members',
+      'field' => 'M_REP',
+      'label' => 'M_REP',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_RNAME' => array(
+      'id' => 'M_RNAME',
+      'table' => 'sp_portal_members',
+      'field' => 'M_RNAME',
+      'label' => 'M_RNAME',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_RTOTAL' => array(
+      'id' => 'M_RTOTAL',
+      'table' => 'sp_portal_members',
+      'field' => 'M_RTOTAL',
+      'label' => 'M_RTOTAL',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_SEX' => array(
+      'id' => 'M_SEX',
+      'table' => 'sp_portal_members',
+      'field' => 'M_SEX',
+      'label' => 'M_SEX',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_SIG' => array(
+      'id' => 'M_SIG',
+      'table' => 'sp_portal_members',
+      'field' => 'M_SIG',
+      'label' => 'M_SIG',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_STATE' => array(
+      'id' => 'M_STATE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_STATE',
+      'label' => 'M_STATE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_STATUS' => array(
+      'id' => 'M_STATUS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_STATUS',
+      'label' => 'M_STATUS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_SUBSCRIPTION' => array(
+      'id' => 'M_SUBSCRIPTION',
+      'table' => 'sp_portal_members',
+      'field' => 'M_SUBSCRIPTION',
+      'label' => 'M_SUBSCRIPTION',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_TITLE' => array(
+      'id' => 'M_TITLE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_TITLE',
+      'label' => 'M_TITLE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_USERNAME' => array(
+      'id' => 'M_USERNAME',
+      'table' => 'sp_portal_members',
+      'field' => 'M_USERNAME',
+      'label' => 'M_USERNAME',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_WINS' => array(
+      'id' => 'M_WINS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_WINS',
+      'label' => 'M_WINS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_YAHOO' => array(
+      'id' => 'M_YAHOO',
+      'table' => 'sp_portal_members',
+      'field' => 'M_YAHOO',
+      'label' => 'M_YAHOO',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_ZIP' => array(
+      'id' => 'M_ZIP',
+      'table' => 'sp_portal_members',
+      'field' => 'M_ZIP',
+      'label' => 'M_ZIP',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'THEME_ID' => array(
+      'id' => 'THEME_ID',
+      'table' => 'sp_portal_members',
+      'field' => 'THEME_ID',
+      'label' => 'THEME_ID',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_SHOW_BIRTHDAY' => array(
+      'id' => 'M_SHOW_BIRTHDAY',
+      'table' => 'sp_portal_members',
+      'field' => 'M_SHOW_BIRTHDAY',
+      'label' => 'M_SHOW_BIRTHDAY',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PMSTATUS' => array(
+      'id' => 'M_PMSTATUS',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PMSTATUS',
+      'label' => 'M_PMSTATUS',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_PMBLACKLIST' => array(
+      'id' => 'M_PMBLACKLIST',
+      'table' => 'sp_portal_members',
+      'field' => 'M_PMBLACKLIST',
+      'label' => 'M_PMBLACKLIST',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_DONATE' => array(
+      'id' => 'M_DONATE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_DONATE',
+      'label' => 'M_DONATE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LANG' => array(
+      'id' => 'M_LANG',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LANG',
+      'label' => 'M_LANG',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_LCID' => array(
+      'id' => 'M_LCID',
+      'table' => 'sp_portal_members',
+      'field' => 'M_LCID',
+      'label' => 'M_LCID',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_TIME_OFFSET' => array(
+      'id' => 'M_TIME_OFFSET',
+      'table' => 'sp_portal_members',
+      'field' => 'M_TIME_OFFSET',
+      'label' => 'M_TIME_OFFSET',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+    'M_TIME_TYPE' => array(
+      'id' => 'M_TIME_TYPE',
+      'table' => 'sp_portal_members',
+      'field' => 'M_TIME_TYPE',
+      'label' => 'M_TIME_TYPE',
+      'exclude' => 0,
+      'relationship' => 'none',
+    ),
+  ));
+  $handler->override_option('access', array(
+    'type' => 'perm',
+    'perm' => 'table wizard administration',
+  ));
+  $handler->override_option('cache', array(
+    'type' => 'none',
+  ));
+  $handler->override_option('title', 'Contents of sp_portal_members');
+  $handler->override_option('header', 'This is a view of a raw database table. It may be sorted in various ways by clicking the column headers.
+
+        If you identify a particular field that does not need to be used in views of this table, go to the <a href="/dev/druportal/admin/content/tw/analyze/1">analysis page</a> and check the <em>Ignore</em> box for that field. It will then no longer appear here.');
+  $handler->override_option('header_format', '1');
+  $handler->override_option('header_empty', 0);
+  $handler->override_option('empty', 'There are no rows in this table.');
+  $handler->override_option('empty_format', '1');
+  $handler->override_option('items_per_page', 25);
+  $handler->override_option('use_pager', '1');
+  $handler->override_option('style_plugin', 'table');
+  $handler->override_option('style_options', array(
+    'grouping' => '',
+    'override' => 1,
+    'sticky' => 1,
+    'order' => 'asc',
+    'columns' => array(
+      'MEMBER_ID' => 'MEMBER_ID',
+      'M_AGE' => 'M_AGE',
+      'M_AIM' => 'M_AIM',
+      'M_AVATAR_URL' => 'M_AVATAR_URL',
+      'M_BIO' => 'M_BIO',
+      'M_CITY' => 'M_CITY',
+      'M_COUNTRY' => 'M_COUNTRY',
+      'M_DATE' => 'M_DATE',
+      'M_DEFAULT_VIEW' => 'M_DEFAULT_VIEW',
+      'M_EMAIL' => 'M_EMAIL',
+      'M_FIRSTNAME' => 'M_FIRSTNAME',
+      'M_GLOW' => 'M_GLOW',
+      'M_GOLD' => 'M_GOLD',
+      'M_GTOTAL' => 'M_GTOTAL',
+      'M_HIDE_EMAIL' => 'M_HIDE_EMAIL',
+      'M_HOBBIES' => 'M_HOBBIES',
+      'M_HOMEPAGE' => 'M_HOMEPAGE',
+      'M_ICQ' => 'M_ICQ',
+      'M_IP' => 'M_IP',
+      'M_KEY' => 'M_KEY',
+      'M_LAST_IP' => 'M_LAST_IP',
+      'M_LASTHEREDATE' => 'M_LASTHEREDATE',
+      'M_LASTNAME' => 'M_LASTNAME',
+      'M_LASTPOSTDATE' => 'M_LASTPOSTDATE',
+      'M_LEVEL' => 'M_LEVEL',
+      'M_LINK1' => 'M_LINK1',
+      'M_LINK2' => 'M_LINK2',
+      'M_LNEWS' => 'M_LNEWS',
+      'M_LOSSES' => 'M_LOSSES',
+      'M_MARSTATUS' => 'M_MARSTATUS',
+      'M_MSN' => 'M_MSN',
+      'M_NAME' => 'M_NAME',
+      'M_NEWEMAIL' => 'M_NEWEMAIL',
+      'M_OCCUPATION' => 'M_OCCUPATION',
+      'M_PAGE_VIEWS' => 'M_PAGE_VIEWS',
+      'M_PASSWORD' => 'M_PASSWORD',
+      'M_PHOTO_URL' => 'M_PHOTO_URL',
+      'M_PMEMAIL' => 'M_PMEMAIL',
+      'M_PMRECEIVE' => 'M_PMRECEIVE',
+      'M_POSTS' => 'M_POSTS',
+      'M_QUOTE' => 'M_QUOTE',
+      'M_RECEIVE_EMAIL' => 'M_RECEIVE_EMAIL',
+      'M_RECMAIL' => 'M_RECMAIL',
+      'M_REP' => 'M_REP',
+      'M_RNAME' => 'M_RNAME',
+      'M_RTOTAL' => 'M_RTOTAL',
+      'M_SEX' => 'M_SEX',
+      'M_SIG' => 'M_SIG',
+      'M_STATE' => 'M_STATE',
+      'M_STATUS' => 'M_STATUS',
+      'M_SUBSCRIPTION' => 'M_SUBSCRIPTION',
+      'M_TITLE' => 'M_TITLE',
+      'M_USERNAME' => 'M_USERNAME',
+      'M_WINS' => 'M_WINS',
+      'M_YAHOO' => 'M_YAHOO',
+      'M_ZIP' => 'M_ZIP',
+      'THEME_ID' => 'THEME_ID',
+      'M_SHOW_BIRTHDAY' => 'M_SHOW_BIRTHDAY',
+      'M_PMSTATUS' => 'M_PMSTATUS',
+      'M_PMBLACKLIST' => 'M_PMBLACKLIST',
+      'M_DONATE' => 'M_DONATE',
+      'M_LANG' => 'M_LANG',
+      'M_LCID' => 'M_LCID',
+      'M_TIME_OFFSET' => 'M_TIME_OFFSET',
+      'M_TIME_TYPE' => 'M_TIME_TYPE',
+    ),
+    'info' => array(
+      'MEMBER_ID' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_AGE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_AIM' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_AVATAR_URL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_BIO' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_CITY' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_COUNTRY' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_DATE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_DEFAULT_VIEW' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_EMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_FIRSTNAME' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_GLOW' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_GOLD' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_GTOTAL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_HIDE_EMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_HOBBIES' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_HOMEPAGE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_ICQ' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_IP' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_KEY' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LAST_IP' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LASTHEREDATE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LASTNAME' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LASTPOSTDATE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LEVEL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LINK1' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LINK2' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LNEWS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LOSSES' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_MARSTATUS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_MSN' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_NAME' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_NEWEMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_OCCUPATION' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PAGE_VIEWS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PASSWORD' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PHOTO_URL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PMEMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PMRECEIVE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_POSTS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_QUOTE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_RECEIVE_EMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_RECMAIL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_REP' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_RNAME' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_RTOTAL' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_SEX' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_SIG' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_STATE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_STATUS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_SUBSCRIPTION' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_TITLE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_USERNAME' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_WINS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_YAHOO' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_ZIP' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'THEME_ID' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_SHOW_BIRTHDAY' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PMSTATUS' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_PMBLACKLIST' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_DONATE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LANG' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_LCID' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_TIME_OFFSET' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+      'M_TIME_TYPE' => array(
+        'sortable' => 1,
+        'separator' => '',
+      ),
+    ),
+    'default' => -1,
+  ));
+  $handler = $view->new_display('page', 'Page', 'page_1');
+  $handler->override_option('path', 'admin/content/tw/view/sp_portal_members');
+  $handler->override_option('menu', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $handler->override_option('tab_options', array(
+    'type' => 'none',
+    'title' => '',
+    'description' => '',
+    'weight' => 0,
+    'name' => 'navigation',
+  ));
+  $views[$view->name] = $view;
 
   return $views;
 }
