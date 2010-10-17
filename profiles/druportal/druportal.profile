@@ -26,12 +26,12 @@ function druportal_profile_details() {
  */
 function druportal_profile_modules() {
   return array(
-    // Enable optional core modules.
+    // Enable core modules
     'dblog', 'help', 'taxonomy', 'search',
 
     // Druportal Included Modules
-    'admin_menu', 'adminrole', 'content', 'views', 'vertical_tabs',
-    'features', 'token',
+    'install_profile_api', 'admin_menu', 'adminrole', 'content', 'views',
+    'vertical_tabs', 'features', 'token',
 
     // Enable Modules Necessary for SkyPortal core functionality
     'profile', 'scheduler', 'privatemsg', 'druportal_announcements',
@@ -58,6 +58,9 @@ function druportal_profile_task_list() {
  * Perform final installation tasks for this installation profile.
  */
 function druportal_profile_tasks(&$task, $url) {
+
+  // Enable Install Profile API
+  install_include(druportal_profile_modules());
 
   // $task is set to 'profile' the first time this function is called.
   if ($task == 'profile') {
