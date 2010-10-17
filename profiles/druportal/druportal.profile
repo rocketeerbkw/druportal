@@ -31,12 +31,11 @@ function druportal_profile_modules() {
 
     // Druportal Included Modules
     'admin_menu', 'adminrole', 'content', 'views', 'vertical_tabs',
-    'features', 'token', 
+    'features', 'token',
 
     // Enable Modules Necessary for SkyPortal core functionality
     'profile', 'scheduler', 'privatemsg', 'druportal_announcements',
-    'druportal_welcome', 
-    
+
   );
 }
 
@@ -59,14 +58,14 @@ function druportal_profile_task_list() {
  * Perform final installation tasks for this installation profile.
  */
 function druportal_profile_tasks(&$task, $url) {
-  
+
   // $task is set to 'profile' the first time this function is called.
   if ($task == 'profile') {
-    
+
     // Set up all the things a default installation profile has.
     require_once 'profiles/default/default.profile';
     default_profile_tasks($task, $url);
-    
+
     // Make admin role have permissions for module that may have been enabled
     // after adminrole
     require_once 'profiles/druportal/modules/adminrole/adminrole.module';
@@ -105,19 +104,19 @@ EOL;
     // Set $task to next task so the installer UI will be correct.
     //$task = 'druportal-import';
     //drupal_set_title(st('Import Data'));
-    
+
     //// Ask what info they want to import
     //return drupal_get_form('druportal_import_select', $url);
     $task = 'profile-finished';
   }
 
   if ($task == 'druportal-import') {
-    
+
     // Get form data that was submitted from 'profile'
     // This is what features should we import data for
-    
+
     // Kick off batch api to do the importing
-    
+
 
     // Set $task to next task so the installer UI will be correct.
     $task = 'druportal-import-complete';
@@ -159,14 +158,14 @@ EOL;
 function druportal_import_select($form_state, $url) {
   $form['#action'] = $url;
   $form['#redirect'] = FALSE;
-  
+
   $form['druportal_import_features'] = array(
     '#type' => 'fieldset',
     '#title' => 'Features to Import',
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
   );
-  
+
   $form['druportal_import_features']['config'] = array(
     '#type' => 'checkbox',
     '#title' => 'Config',
@@ -239,7 +238,7 @@ function druportal_import_select($form_state, $url) {
     '#default_value' => 0,
     '#disabled' => TRUE,
   );
-  
+
   $form['submit'] = array(
     '#type' => 'submit',
     '#value' => st('Save and Continue'),
