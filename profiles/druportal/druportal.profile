@@ -73,9 +73,24 @@ function druportal_profile_tasks(&$task, $url) {
     // after adminrole
     require_once 'profiles/druportal/modules/adminrole/adminrole.module';
     adminrole_update_permissions();
+    $adminRole = install_get_rid('administrator');
 
     // Create the profile fields for members
     druportal_profile_add_fields();
+
+    // Create input formats to mimick what skyportal had
+    $druportalAdminFormat = install_add_format('Druportal Admin WYSIWYG');
+    install_format_set_roles(array($adminRole), $druportalAdminFormat);
+    install_add_filter($druportalAdminFormat, 'filter', 1, 1); // Line break converter
+    install_add_filter($druportalAdminFormat, 'filter', 2, 0); // URL Filter
+    install_add_filter($druportalAdminFormat, 'filter', 3, 10); // HTML Corrector
+
+    $druportalFormat = install_add_format('Druportal WYSIWYG');
+    install_format_set_roles(array(install_get_rid('authenticated user')), $druportalFormat);
+    install_add_filter($druportalFormat, 'filter', 0, 1); // HTML Filter
+    install_add_filter($druportalFormat, 'filter', 1, 2); // Line break converter
+    install_add_filter($druportalFormat, 'filter', 2, 0); // URL Filter
+    install_add_filter($druportalFormat, 'filter', 3, 10); // HTML Corrector
 
     // Set $task to next task so the installer UI will be correct.
     //$task = 'druportal-import';
