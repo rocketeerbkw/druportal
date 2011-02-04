@@ -1,0 +1,48 @@
+//$Id: CHANGELOG.txt,v 1.1.2.102.2.26 2010/12/24 20:01:55 mikeryan Exp $
+
+Migrate 2.0 Beta 3
+==================
+
+Features and enhancements
+
+- #989200 - Support "dynamic" migrations. Changes to be aware of:
+  All modules implementing migration classes must now implement hook_migrate_api()
+    (see migrate_migrate_api() for an example).
+  Dependencies and sourceMigrations must now be expressed in terms of 
+    machine name rather than class name.
+  MigrationBase::getInstance now takes a machine name rather than a class name. 
+  Migration class names are no longer required to end in 'Migration'.
+- #992898 - Pass options to source and destination constructors as arrays.
+File destinations (i.e., migrating directly to the file_managed table, with
+  option copying of the files themselves) are now supported.
+Allow migration of comment enable/disable.
+Check max_execution_time as well as memory_limit, for graceful exit when
+  max_execution_time is in play.
+Add dedupe() method for a field mapping.
+Apply MigrateBase::timestamp() to comment created/changed
+
+Bug fixes
+
+- #1006272 - Remove lengths on int fields in schema (breaks Postgres)
+- #1005030 - Replace eval() with proper call_user_func().
+- #1005360 - Skip .test files in registry scan
+- #1004268 - Don't munge date separators
+- prepareRow() hook skips current row only if boolean FALSE is returned.
+- #989622 - Fix undefined variable in MigrateDestinationNode::import().
+- #984294 - Make migrate dashbard a local task.
+needs_update => needs-update to match drush conventions.
+- #959400 - Better way to get vid for vocabulary.
+- #984336 - Additional fields and vocabularies not reported on migration info page
+- #990960 - Initialize fields array for profiles
+- #993684 - hook_requirements should always return array.
+- #983968 - Bogus settings of ->uid
+
+Migrate 2.0 Beta 2
+==================
+Bug fixes
+- #984294 - Migration info pages are blank
+
+Migrate 2.0 Beta 1
+==================
+Version 2 of the Migrate module is an entirely new implementation - it is 
+pointless to list changes since Migrate 1.

@@ -1,0 +1,16 @@
+; $Id: migrate_ui.info,v 1.1.2.3 2010/02/23 20:00:26 mikeryan Exp $
+name = "Migrate UI"
+description = "UI for managing migration processes"
+package = "Development"
+;configure = admin/config/development/migrate
+core = 7.x
+dependencies[] = migrate
+files[] = migrate_ui.module
+;files[] = migrate_ui.pages.inc
+
+; Information added by drupal.org packaging script on 2010-12-24
+version = "7.x-2.0-beta3"
+core = "7.x"
+project = "migrate"
+datestamp = "1293222742"
+

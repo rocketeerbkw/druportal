@@ -1,0 +1,13 @@
+<?php
+// $Id: migrate_example.module,v 1.1.2.4 2010/12/18 16:04:59 mikeryan Exp $
+
+/*
+ * You must implement hook_migrate_api(), setting the API level to 2, for
+ * your migration classes to be recognized by the Migrate module.
+ */
+function migrate_example_migrate_api() {
+  $api = array(
+    'api' => 2,
+  );
+  return $api;
+}
