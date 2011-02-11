@@ -1,5 +1,5 @@
 <?php
-// $Id: node.inc,v 1.1.2.30 2010/12/22 03:16:06 mikeryan Exp $
+// $Id: node.inc,v 1.1.2.34 2011/02/06 22:46:42 mikeryan Exp $
 
 /**
  * @file
@@ -61,6 +61,7 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
     $fields['nid'] = t('Node: Existing node ID');
     $fields['is_new'] = t('Node: Indicates a new node with the specified nid should be created');
     $fields['uid'] = t('Node: Authored by (uid)');
+    $fields['revision_uid'] = t('Node: Modified (uid)');
     $fields['created'] = t('Node: Created timestamp');
     $fields['changed'] = t('Node: Modified timestamp');
     $fields['status'] = t('Node: Published');
@@ -89,7 +90,9 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
    */
   public function bulkRollback(array $nids) {
     migrate_instrument_start('node_delete_multiple');
+    $this->prepareRollback($nids);
     node_delete_multiple($nids);
+    $this->completeRollback($nids);
     migrate_instrument_stop('node_delete_multiple');
   }
 
@@ -108,6 +111,8 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
     // Updating previously-migrated content?
     $migration = Migration::currentMigration();
     if (isset($row->migrate_map_destid1)) {
+      // Make sure is_new is off
+      $node->is_new = FALSE;
       if (isset($node->nid)) {
         if ($node->nid != $row->migrate_map_destid1) {
           throw new MigrateException(t("Incoming nid !nid and map destination nid !destid1 don't match",
@@ -117,12 +122,14 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
       else {
         $node->nid = $row->migrate_map_destid1;
       }
-      // Get the existing vid, so updates don't generate notices
-      $node->vid = db_select('node', 'n')
-                   ->fields('n', array('vid'))
+      // Get the existing vid, tnid so updates don't generate notices
+      $values = db_select('node', 'n')
+                   ->fields('n', array('vid', 'tnid'))
                    ->condition('nid', $node->nid)
                    ->execute()
-                   ->fetchField();
+                   ->fetchAssoc();
+      $node->vid = $values['vid'];
+      $node->tnid = $values['tnid'];
     }
     if ($migration->getSystemOfRecord() == Migration::DESTINATION) {
       if (!isset($node->nid)) {
@@ -203,14 +210,17 @@ class MigrateDestinationNode extends MigrateDestinationEntity {
       if (isset($changed)) {
         $fields['timestamp'] = $changed;
       }
-      if ($node->uid != $GLOBALS['user']->uid) {
-        $fields['uid'] = $node->uid;
+      $revision_uid = isset($node->revision_uid) ? $node->revision_uid : $node->uid;
+      if ($revision_uid != $GLOBALS['user']->uid) {
+        $fields['uid'] = $revision_uid;
       }
       if (!empty($fields)) {
         // We actually have something to update.
         $query->fields($fields);
         $query->execute();
-        $node->timestamp = $changed;
+        if (isset($changed)) {
+          $node->timestamp = $changed;
+        }
       }
     }
 

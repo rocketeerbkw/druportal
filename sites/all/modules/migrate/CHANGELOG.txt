@@ -1,4 +1,37 @@
-//$Id: CHANGELOG.txt,v 1.1.2.102.2.26 2010/12/24 20:01:55 mikeryan Exp $
+//$Id: CHANGELOG.txt,v 1.1.2.102.2.50 2011/02/10 02:13:21 mikeryan Exp $
+
+Migrate 2.0 Release Candidate 1
+===============================
+
+Features and enhancements
+- #919108 - Add deleteDestination() for maps; cache migration list.
+- #1005090 - Support multiple values for file fields.
+- #996086 - Add prepareRollback and completeRollback methods for entities.
+- #1039882 - Pass client migration to stub creation. Note that $migration->values
+  (the destination object being built) is now $migration->destinationValues - any
+  migrations referencing this member will need to change.
+- #946350 - Accept arrays in sourceMigration();
+Let a node migration set node_revisions.uid. That's the 'last edited by' user
+
+Bug fixes
+- #1053798 - Consistent use of error codes.
+- #1053526 - Machine names in drush commands now case-insensitive.
+- #914440 - Enhance multilingual support. 
+- #1014648 - Defaulting of file field subfields.
+- #1037872 - Make sure is_new is off for previously migrated content.
+- #919706 - Fix drush migrate-descriptions command.
+- #1027468 - Limit map/message table name lengths.
+- #1045646 - Handle PHP memory_limit of -1.
+- #1050348 - Check map table existence in correct DB.
+- #1028824 - Errors during registry rebuild trigger fatal error.
+Fix highwater handling to deal with duplicate values.
+- #998604 - Fixed dedupe.
+- #998586 - Improved feedback for disabled migrations.
+- #972382 - Fix MigrateDestinationTableCopy.
+- #962120 - Support idlist on rollback.
+- #1017256 - Document case-sensitivity in beer.inc.
+- #1013844 - Better error handling in getInstance().
+- #1008228 - migrate_example broken by list changes in D7 RC3.
 
 Migrate 2.0 Beta 3
 ==================

@@ -1,5 +1,5 @@
 <?php
-// $Id: sqlmap.inc,v 1.1.2.9 2010/12/18 16:04:59 mikeryan Exp $
+// $Id: sqlmap.inc,v 1.1.2.12 2011/02/09 02:23:49 mikeryan Exp $
 
 /**
  * @file
@@ -51,9 +51,11 @@ class MigrateSQLMap extends MigrateMap {
 
   public function __construct($machine_name, array $source_key,
       array $destination_key, $connection_key = 'default') {
-    // Default generated table names
+    // Default generated table names, limited to 63 characters
     $this->mapTable = 'migrate_map_' . drupal_strtolower($machine_name);
+    $this->mapTable = substr($this->mapTable, 0, 63);
     $this->messageTable = 'migrate_message_' . drupal_strtolower($machine_name);
+    $this->messageTable = substr($this->messageTable, 0, 63);
     $this->sourceKey = $source_key;
     $this->destinationKey = $destination_key;
     $this->connection = Database::getConnection('default', $connection_key);
@@ -76,7 +78,7 @@ class MigrateSQLMap extends MigrateMap {
    */
   protected function ensureTables() {
     if (!$this->ensured) {
-      if (!db_table_exists($this->mapTable)) {
+      if (!$this->connection->schema()->tableExists($this->mapTable)) {
         // Generate appropriate schema info for the map and message tables,
         // and map from the source field names to the map/msg field names
         $count = 1;
@@ -453,6 +455,31 @@ class MigrateSQLMap extends MigrateMap {
       $map_query->execute();
     }
     $message_query->execute();
+  }
+
+  /**
+   * Delete the map entry and any message table entries for the specified destination row.
+   *
+   * @param array $destination_key
+   */
+  public function deleteDestination(array $destination_key) {
+    $map_query = $this->connection->delete($this->mapTable);
+    $message_query = $this->connection->delete($this->messageTable);
+    $source_key = $this->lookupSourceID($destination_key);
+    if (!empty($source_key)) {
+      $count = 1;
+      foreach ($destination_key as $key_value) {
+        $map_query->condition('destid' . $count, $key_value);
+        $count++;
+      }
+      $map_query->execute();
+      $count = 1;
+      foreach ($source_key as $key_value) {
+        $message_query->condition('sourceid' . $count, $key_value);
+        $count++;
+      }
+      $message_query->execute();
+    }
   }
 
   /**

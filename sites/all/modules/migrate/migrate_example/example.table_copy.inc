@@ -1,41 +1,37 @@
 <?php
-// $Id: example.table_copy.inc,v 1.1.2.2 2010/09/04 19:07:18 mikeryan Exp $
+// $Id: example.table_copy.inc,v 1.1.2.3 2011/01/18 02:51:39 mikeryan Exp $
 
 /**
  * @file
- * Copy legacy urls table from mssql to drupal
+ * Make a copy of the role table. To use this you must create a table named
+ * role_copy with the same structure as role.
  */
 
-class LegacyURLsMigration extends Migration {
+class RoleTableMigration extends Migration {
   public function __construct() {
     parent::__construct();
     $this->dependencies = array();
-    $this->description = '<p>Copy legacy urls table from as an example of table_copy plugin.</p>';
-    $this->team[] = new MigrateTeamMember('Moshe Weitzman', 'weitzman@tejasa.com', 'Implementors');
-    $this->highwaterField = 'modificationdatetime';
-
-    $query = db_select('migrate_example_legacy_urls', 'lu')->fields('lu');
-    $this->source = new MigrateSourceSQL($query, array(
-      'id' => array(
-        'type' => 'int',
-        'size' => 'big',
-        'not null' => TRUE,
-        'alias' => 'lu',
-        'default' => 0,
-      ),
-    ));
-    // By default, MigrateSourceSQL derives a count query from the main query -
-    // but we can override it
-    // $this->source->countQuery = db_select('migrate_example_beer', 'b');
-    // $this->source->countQuery->addExpression('COUNT(bid)', 'cnt');
-
+    $this->description = 'Copy the role table as an example of table_copy plugin.';
     $destination_key = array(
-      'id' => array(
+      'rid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
       ),
     );
-    $this->destination = new MigrateDestinationTableCopy($destination_key, 'migrate_example_copy_urls');
+    $query = db_select('role', 'r')->fields('r');
+    $this->source = new MigrateSourceSQL($query);
+    $this->destination = new MigrateDestinationTableCopy('role_copy', $destination_key);
+
+    $this->map = new MigrateSQLMap($this->machineName,
+    array('rid' => array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'alias' => 'r',
+      )
+    ),
+    $destination_key
+    );
   }
 }

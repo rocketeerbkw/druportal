@@ -1,4 +1,4 @@
-; $Id: migrate.info,v 1.1.2.1.2.23 2010/12/24 19:48:04 mikeryan Exp $
+; $Id: migrate.info,v 1.1.2.1.2.24 2011/01/23 21:44:39 weitzman Exp $
 name = "Migrate"
 description = "Import content from external sources"
 package = "Development"
@@ -22,6 +22,7 @@ files[] = plugins/destinations/file.inc
 files[] = plugins/destinations/path.inc
 files[] = plugins/destinations/fields.inc
 files[] = plugins/destinations/table_copy.inc
+files[] = plugins/sources/csv.inc
 files[] = plugins/sources/list.inc
 files[] = plugins/sources/sql.inc
 files[] = plugins/sources/sqlmap.inc
@@ -33,9 +34,9 @@ files[] = tests/plugins/destinations/term.test
 files[] = tests/plugins/destinations/user.test    
 files[] = tests/plugins/sources/xml.test
 
-; Information added by drupal.org packaging script on 2010-12-24
-version = "7.x-2.0-beta3"
+; Information added by drupal.org packaging script on January 1, 1970 - 00:00
+version = "7.x-2.0-rc1"
 core = "7.x"
 project = "migrate"
-datestamp = "1293222742"
+datestamp = "1297304541"
 

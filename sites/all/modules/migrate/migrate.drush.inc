@@ -1,5 +1,5 @@
 <?php
-// $Id: migrate.drush.inc,v 1.1.2.28.2.57 2010/12/18 16:04:58 mikeryan Exp $
+// $Id: migrate.drush.inc,v 1.1.2.28.2.61 2011/02/09 00:55:48 mikeryan Exp $
 
 /**
  * @file
@@ -272,6 +272,9 @@ function drush_migrate_status($name = NULL) {
         case MigrationBase::STATUS_STOPPING:
           $status = dt('Stopping');
           break;
+        case MigrationBase::STATUS_DISABLED:
+          $status = dt('Disabled');
+          break;
         default:
           $status = dt('Unknown');
           break;
@@ -364,7 +367,7 @@ function drush_migrate_descriptions() {
       // First group the mappings
       $descriptions = array();
       foreach ($migration->getFieldMappings() as $mapping) {
-        $descriptions[$mapping->issueGroup][] = $mapping;
+        $descriptions[$mapping->getIssueGroup()][] = $mapping;
       }
       // Put out each group header
       $table = array();
@@ -383,14 +386,14 @@ function drush_migrate_descriptions() {
         $group_header = '--- ' . strtoupper($group) . ' ---';
         $table[] = array('', $group_header);
         foreach ($mappings as $mapping) {
-          if (is_array($mapping->defaultValue)) {
-            $default = implode(',', $mapping->defaultValue);
+          if (is_array($mapping->getDefaultValue())) {
+            $default = implode(',', $mapping->getDefaultValue());
           }
           else {
-            $default = $mapping->defaultValue;
+            $default = $mapping->getDefaultValue();
           }
-          $table[] = array($mapping->destinationField, $mapping->sourceField,
-            $default, $mapping->descriptionText);
+          $table[] = array($mapping->getDestinationField(), $mapping->getSourceField(),
+            $default, $mapping->getDescription());
         }
       }
 
@@ -496,9 +499,21 @@ function drush_migrate_get_migrations($args) {
   else {
     $named_migrations = array();
     foreach (explode(',', $args) as $name) {
-      $migration = $migration_objects[$name];
-      if ($migration->getEnabled()) {
-        $named_migrations[$name] = $migration;
+      $found = FALSE;
+      foreach ($migration_objects as $machine_name => $migration) {
+        if (strtolower($name) == strtolower($machine_name)) {
+          if ($migration->getEnabled()) {
+            $named_migrations[$name] = $migration;
+            $found = TRUE;
+            break;
+          }
+          else {
+            drush_log(dt('Migration !name is disabled', array('!name' => $name)), 'warning');
+          }
+        }
+      }
+      if (!$found) {
+        drush_log(dt('No migration with machine name !name found', array('!name' => $name)), 'error');
       }
     }
     $migration_objects = $named_migrations;
@@ -534,7 +549,7 @@ function drush_migrate_validate_common($args) {
   }
   else {
     if (empty($args)) {
-      return drush_set_error(NULL, dt('You must specify either a migration name or the -all option'));
+      return drush_set_error(NULL, dt('You must specify either a migration name or the --all option'));
     }
     $machine_names = explode(',', $args);
 

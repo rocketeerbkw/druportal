@@ -1,5 +1,5 @@
 <?php
-// $Id: sql.inc,v 1.1.2.32 2010/12/22 03:16:06 mikeryan Exp $
+// $Id: sql.inc,v 1.1.2.33 2011/01/25 19:45:29 mikeryan Exp $
 
 /**
  * @file
@@ -60,6 +60,13 @@ class MigrateSourceSQL extends MigrateSource {
    * @var boolean
    */
   protected $usingHighwater = FALSE;
+
+  /**
+   * Whether, in the current iteration, we have reached the highwater mark.
+   *
+   * @var boolen
+   */
+  protected $highwaterSeen = FALSE;
 
   /**
    * Return an options array for PDO sources.
@@ -223,6 +230,7 @@ class MigrateSourceSQL extends MigrateSource {
     $this->result = NULL;
     $this->currentRow = NULL;
     $this->numProcessed = 0;
+    $this->highwaterSeen = FALSE;
     $this->query = clone $this->originalQuery;
 
     // Get the keys, for potential use in joining map/message table, or enforcing
@@ -355,12 +363,17 @@ class MigrateSourceSQL extends MigrateSource {
         }
         else {
           if ($this->usingHighwater) {
-            // With highwater, we want to take this row if it's above the highwater
-            // mark
-            $highwaterField = $migration->getHighwaterField();
-            $highwaterField = $highwaterField['name'];
-            if ($this->currentRow->$highwaterField <= $migration->getHighwater()) {
-              continue;
+            if ($this->highwaterSeen) {
+              // We've passed the highwater mark previously, so no need to check again
+            }
+            else {
+              // With highwater, we want to take this row if it's above the highwater
+              // mark
+              $highwaterField = $migration->getHighwaterField();
+              $highwaterField = $highwaterField['name'];
+              if ($this->currentRow->$highwaterField <= $migration->getHighwater()) {
+                continue;
+              }
             }
           }
           else {

@@ -1,5 +1,5 @@
 <?php
-// $Id: comment.inc,v 1.1.2.28 2010/12/24 17:59:53 mikeryan Exp $
+// $Id: comment.inc,v 1.1.2.29 2011/01/30 16:51:54 mikeryan Exp $
 
 /**
  * @file
@@ -95,7 +95,9 @@ class MigrateDestinationComment extends MigrateDestinationEntity {
    */
   public function bulkRollback(array $cids) {
     migrate_instrument_start('comment_delete_multiple');
+    $this->prepareRollback($cids);
     $result = comment_delete_multiple($cids);
+    $this->completeRollback($cids);
     migrate_instrument_stop('comment_delete_multiple');
     return $result;
   }

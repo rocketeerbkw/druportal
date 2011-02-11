@@ -1,5 +1,5 @@
 <?php
-// $Id: beer.inc,v 1.1.2.43 2010/12/18 20:36:21 mikeryan Exp $
+// $Id: beer.inc,v 1.1.2.49 2011/02/06 22:06:56 mikeryan Exp $
 
 /**
  * @file
@@ -11,7 +11,8 @@
  * kind of Drupal object (for example, a specific node type), you define
  * a class derived from Migration. You must define a constructor to initialize
  * your migration object. By default, your class name will be the "machine name"
- * of the migration, by which you refer to it.
+ * of the migration, by which you refer to it. Note that the machine name is
+ * case-sensitive.
  *
  * In any serious migration project, you will find there are some options
  * which are common to the individual migrations you're implementing. You can
@@ -93,8 +94,8 @@ class BeerTermMigration extends BasicExampleMigration {
 
     // Assign mappings TO destination fields FROM source fields. To discover
     // the names used in these calls, use the drush commands
-    // drush migrate-fields-destination beerterm
-    // drush migrate-fields-source beerterm
+    // drush migrate-fields-destination BeerTerm
+    // drush migrate-fields-source BeerTerm
     $this->addFieldMapping('name', 'style');
     $this->addFieldMapping('description', 'details');
 
@@ -148,7 +149,7 @@ class BeerTermMigration extends BasicExampleMigration {
  * And that's it for the BeerTerm migration! For a simple migration, all you
  * have to do is define the source, the destination, and mappings between the
  * two - to import the data you simply do:
- * drush migrate-import beerterm
+ * drush migrate-import BeerTerm
  *
  * However, in real-world migrations not everything can be represented simply
  * through static mappings - you will frequently need to do some run-time
@@ -243,17 +244,6 @@ class BeerUserMigration extends BasicExampleMigration {
     // where it highlights "init" as unmapped.
     $this->addFieldMapping('int')
          ->issueGroup(t('DNM'));
-  }
-
-  // If you define a prepare() method in your migration, it will be called
-  // after the mappings have been applied and before the destination object is
-  // saved. The first argument is the destination object as built up using
-  // the mappings; the second argument is the raw source data.
-  public function prepare(stdClass $account, stdClass $row) {
-    // Source dates are in ISO format.
-    // Because the mappings above have been applied, $account->created contains
-    // the date/time string now - we could also pass $row->posted here.
-    $account->created = strtotime($account->created);
   }
 }
 

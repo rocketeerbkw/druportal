@@ -1,5 +1,5 @@
 <?php
-// $Id: table_copy.inc,v 1.1.2.10 2010/10/09 17:34:33 mikeryan Exp $
+// $Id: table_copy.inc,v 1.1.2.11 2011/01/18 02:51:39 mikeryan Exp $
 
 /**
  * @file
@@ -10,9 +10,10 @@
  * Destination class implementing migration into a single table.
  */
 class MigrateDestinationTableCopy extends MigrateDestination {
-  public function __construct(array $key_schema, $tableName) {
-    parent::__construct($key_schema);
+  public function __construct($tableName, $keySchema) {
+    parent::__construct();
     $this->tableName = $tableName;
+    $this->keySchema = $keySchema;
   }
 
   public function __toString() {
@@ -46,22 +47,25 @@ class MigrateDestinationTableCopy extends MigrateDestination {
    *  successful. FALSE on failure.
    */
   public function import(stdClass $entity, stdClass $row) {
+    $migration = MigrationBase::currentMigration();
+
     $fields = clone $row;
     $key = key($this->keySchema);
     $valkey = $row->$key;
     unset($fields->migrate_map_destid1);
+    unset($fields->needs_update);
     $query = db_merge($this->tableName)->key(array($key => $valkey))->fields((array)$fields);
     try {
       $query->execute();
       return array($valkey);
     }
     catch (MigrateException $e) {
-      $this->saveMessage($e->getMessage(), $e->getLevel());
-      $this->showMessage($e->getMessage());
+      $migration->saveMessage($e->getMessage(), $e->getLevel());
+      $migration->showMessage($e->getMessage());
     }
     catch (Exception $e) {
-      $this->saveMessage($e->getMessage());
-      $this->showMessage($e->getMessage());
+      $migration->saveMessage($e->getMessage());
+      $migration->showMessage($e->getMessage());
     }
   }
 

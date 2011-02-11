@@ -1,5 +1,5 @@
 <?php
-// $Id: migrate_ui.pages.inc,v 1.1.2.41 2010/11/29 16:07:37 mikeryan Exp $
+// $Id: migrate_ui.pages.inc,v 1.1.2.42 2011/01/18 03:12:28 mikeryan Exp $
 
 /**
  * @file
@@ -67,6 +67,9 @@ function migrate_ui_dashboard() {
         break;
       case MigrationBase::STATUS_STOPPING:
         $status = t('Stopping');
+        break;
+      case MigrationBase::STATUS_DISABLED:
+        $status = t('Disabled');
         break;
       default:
         $status = t('Unknown');

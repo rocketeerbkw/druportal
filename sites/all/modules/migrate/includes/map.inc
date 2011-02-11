@@ -1,5 +1,5 @@
 <?php
-// $Id: map.inc,v 1.1.2.6 2010/12/18 16:04:58 mikeryan Exp $
+// $Id: map.inc,v 1.1.2.7 2011/02/09 02:23:49 mikeryan Exp $
 
 /**
  * @file
@@ -86,6 +86,13 @@ abstract class MigrateMap implements Iterator {
    * @param array $source_key
    */
   abstract public function delete(array $source_key);
+
+  /**
+   * Delete the map and message entries for a given destination record
+   *
+   * @param array $destination_key
+   */
+  abstract public function deleteDestination(array $destination_key);
 
   /**
    * Delete the map and message entries for a set of given source records.

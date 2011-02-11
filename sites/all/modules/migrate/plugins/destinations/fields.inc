@@ -1,5 +1,5 @@
 <?php
-// $Id: fields.inc,v 1.1.2.50 2010/12/20 17:26:57 mikeryan Exp $
+// $Id: fields.inc,v 1.1.2.53 2011/02/06 22:46:42 mikeryan Exp $
 
 /**
  * @file
@@ -50,6 +50,29 @@ class MigrateFieldsEntityHandler extends MigrateDestinationHandler {
 abstract class MigrateFieldHandler extends MigrateHandler {
   // abstract function arguments(...)
   abstract public function prepare(stdClass $entity, array $field_info, array $instance, array $values);
+
+  /**
+   * Determine the language of the field
+   *
+   * @param $entity
+   * @param $field_info
+   * @param $arguments
+   * @return string language code
+   */
+  function getFieldLanguage(stdClass $entity, $field_info, array $arguments) {
+    $migration = Migration::currentMigration();
+    switch (TRUE) {
+      case !field_is_translatable($migration->getDestination()->getEntityType(), $field_info):
+          return LANGUAGE_NONE;
+      case isset($arguments['language']):
+        return $arguments['language'];
+      case $entity->language != LANGUAGE_NONE:
+        return $entity->language;
+        break;
+      default:
+        return $migration->getDestination()->getLanguage();
+    }
+  }
 }
 
 class MigrateTextFieldHandler extends MigrateFieldHandler {
@@ -82,8 +105,8 @@ class MigrateTextFieldHandler extends MigrateFieldHandler {
 
     $migration = Migration::currentMigration();
     $destination = $migration->getDestination();
-    $language = isset($arguments['language']) ?
-      $arguments['language'] : $destination->getLanguage();
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
+
 
     // Setup the standard Field API array for saving.
     $delta = 0;
@@ -113,9 +136,8 @@ class MigrateValueFieldHandler extends MigrateFieldHandler {
 
   public function prepare(stdClass $entity, array $field_info, array $instance, array $values) {
     $migration = Migration::currentMigration();
-    $language = isset($arguments['language']) ?
-      $arguments['language'] : $migration->getDestination()->getLanguage();
-
+    $arguments = (isset($values['arguments']))? $values['arguments']: array();
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
     // Setup the standard Field API array for saving.
     $delta = 0;
     foreach ($values as $value) {
@@ -170,8 +192,7 @@ class MigrateTaxonomyTermReferenceFieldHandler extends MigrateFieldHandler {
     else {
       $tids = array();
     }
-    $language = isset($arguments['language']) ?
-      $arguments['language'] : $migration->getDestination()->getLanguage();
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
     $result = array();
     $i = 0;
     foreach ($tids as $tid) {
@@ -191,32 +212,57 @@ class MigrateFileFieldHandler extends MigrateFieldHandler {
   /**
    * Prepare file data for saving as a Field API file field.
    *
-   * // TODO: handle multiple values.
-   *
    * @return array
    *  Field API array suitable for inserting in the destination object.
    */
   public function prepare(stdClass $entity, array $field_info, array $instance, array $values) {
-    static $fid;
-
-    $migration = Migration::currentMigration();
     $arguments = $values['arguments'];
     unset($values['arguments']);
-    $delta = 0;
+    $migration = Migration::currentMigration();
+
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
+
+    $return = array();
+
+    if (empty($arguments['separator'])) {
+      $return[$language][0] = $this->buildFileArray($entity, $field_info, $instance, $migration, $arguments, $values);
+    }
+    else {
+      foreach ($values as $delta => $value) {
+        // Empty stuff is skipped
+        if ($value) {
+          $return[$language][$delta] = $this->buildFileArray($entity, $field_info, $instance, $migration, $arguments, explode($arguments['separator'], $value));
+        }
+      }
+    }
+    return $return;
+  }
+
+  /**
+   * Parses file information to create an appropriate data array.
+   * @param stdClass $entity
+   * @param array $field_info
+   * @param array $instance
+   * @param array $values
+   *
+   * @return array
+   */
+  protected function buildFileArray (stdClass $entity, array $field_info, array $instance, $migration, $arguments, array $values) {
+    static $fids;
 
     if ($arguments['source_path']) {
       $full_path = rtrim($arguments['source_path'], DIRECTORY_SEPARATOR) .
-        DIRECTORY_SEPARATOR . ltrim($values[$delta], DIRECTORY_SEPARATOR);
+        DIRECTORY_SEPARATOR . ltrim(reset($values), DIRECTORY_SEPARATOR);
     }
     else {
-      $full_path = $values[$delta];
+      $full_path = reset($values);
     }
 
     // Check that source exists. If not, mark the entity as 'needs_update' and bail.
     // Sometimes the source file arrives later, when rsync is slower than DB.
     if (!file_exists($full_path)) {
       $migration->saveMessage(t('Source file does not exist: !path',
-        array('!path' => $full_path)), MIGRATION::MESSAGE_WARNING);
+        array('!path' => $full_path)), Migration::MESSAGE_WARNING);
       $migration->needsUpdate = TRUE;
       return;
     }
@@ -285,13 +331,13 @@ class MigrateFileFieldHandler extends MigrateFieldHandler {
             }
           }
           else {
-             $migration->saveMessage(t('Unable to prepare directory !dir', array('!dir' => $destination_dir)), MIGRATION::MESSAGE_ERROR);
-             return;
+            $migration->saveMessage(t('Unable to prepare directory !dir', array('!dir' => $destination_dir)), MIGRATION::MESSAGE_ERROR);
+            return;
           }
           break;
         case 'file_fast':
           // Keep re-using an existing file. We still benefit from the file_exists() check above.
-          if (!isset($fid)) {
+          if (!isset($fids[$source])) {
             $full_path = DRUPAL_ROOT . '/misc/druplicon.png';
             $source = (object) array(
               'uri' => $full_path,
@@ -304,25 +350,42 @@ class MigrateFileFieldHandler extends MigrateFieldHandler {
             $fid = $file->fid;
           }
           else {
-            $file = new stdClass;
-            $file->fid = $fid;
+            $file = new stdClass();
+            $file->fid = $fids[$source];
           }
           break;
       }
       migrate_instrument_stop('MigrateFileFieldHandler file_function');
     }
 
-    $language = isset($arguments['language']) ?
-      $arguments['language'] : $migration->getDestination()->getLanguage();
     if ($file) {
       // Build up a return object.
       $object_field['fid'] = $file->fid;
-      $object_field['alt'] = isset($arguments['source_alt_name']) ? $values[$arguments['source_alt_name']] : NULL;
-      $object_field['title'] = isset($arguments['source_title_name']) ? $values[$arguments['source_title_name']] : NULL;
-      $object_field['description'] = isset($arguments['source_description_name']) ? $values[$arguments['source_description_name']] : NULL;
-      $object_field['display'] = isset($arguments['source_display_name']) ? $values[$arguments['source_display_name']] : NULL;
-      $return[$language][$delta] = $object_field;
-      return $return;
+      if (isset($arguments['source_alt_name']) && isset($values[$arguments['source_alt_name']])) {
+        $object_field['alt'] = $values[$arguments['source_alt_name']];
+      }
+      else {
+        $object_field['alt'] = '';
+      }
+      if (isset($arguments['source_title_name']) && isset($values[$arguments['source_title_name']])) {
+        $object_field['title'] = $values[$arguments['source_title_name']];
+      }
+      else {
+        $object_field['title'] = '';
+      }
+      if (isset($arguments['source_description_name']) && isset($values[$arguments['source_description_name']])) {
+        $object_field['description'] = $values[$arguments['source_description_name']];
+      }
+      else {
+        $object_field['description'] = '';
+      }
+      if (isset($arguments['source_display_name']) && isset($values[$arguments['source_display_name']])) {
+        $object_field['display'] = $values[$arguments['source_display_name']];
+      }
+      else {
+        $object_field['display'] = TRUE;
+      }
+      return $object_field;
     }
     else {
       $migration->saveMessage(t('Unable to create file record for !path', array('!path' => $full_path)), MIGRATION::MESSAGE_ERROR);
@@ -344,9 +407,10 @@ class MigrateFileFieldHandler extends MigrateFieldHandler {
    * @param source_title_name
    * @param source_description_name
    * @param source_display_name
+   * @param separator
    *
    */
- static function arguments($source_path = NULL, $file_function = 'file_copy', $file_replace = FILE_EXISTS_RENAME, $language = NULL, $source_alt_name = NULL, $source_title_name = NULL, $source_description_name = NULL, $source_display_name = NULL) {
+ static function arguments($source_path = NULL, $file_function = 'file_copy', $file_replace = FILE_EXISTS_RENAME, $language = NULL, $source_alt_name = NULL, $source_title_name = NULL, $source_description_name = NULL, $source_display_name = NULL, $separator = NULL) {
     return get_defined_vars();
   }
 }
@@ -367,8 +431,8 @@ class MigrateNodeReferenceFieldHandler extends MigrateFieldHandler {
     else {
       $arguments = array();
     }
-    $language = isset($arguments['language']) ? $arguments['language'] :
-      $migration->getDestination()->getLanguage();
+
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
 
     // Setup the standard Field API array for saving.
     $delta = 0;
@@ -398,8 +462,7 @@ class MigrateUserReferenceFieldHandler extends MigrateFieldHandler {
     else {
       $arguments = array();
     }
-    $language = isset($arguments['language']) ?
-      $arguments['language'] : $migration->getDestination()->getLanguage();
+    $language = $this->getFieldLanguage($entity, $field_info, $arguments);
 
     // Setup the standard Field API array for saving.
     $delta = 0;

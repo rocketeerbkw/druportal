@@ -1,5 +1,5 @@
 <?php
-// $Id: user.inc,v 1.1.2.26 2010/12/22 03:16:06 mikeryan Exp $
+// $Id: user.inc,v 1.1.2.28 2011/01/30 16:51:54 mikeryan Exp $
 
 /**
  * @file
@@ -61,7 +61,7 @@ class MigrateDestinationUser extends MigrateDestinationEntity {
     $fields['name'] = t('User: Username');
     $fields['pass'] = t('User: Password (plain text)');
     $fields['mail'] = t('User: Email address');
-    $fields['roles'] = t('User: Roles');
+    $fields['roles'] = t('User: Role IDs');
     $fields['theme'] = t('User: Default theme');
     $fields['signature'] = t('User: Signature');
     $fields['signature_format'] = t('User: Signature format');
@@ -89,7 +89,9 @@ class MigrateDestinationUser extends MigrateDestinationEntity {
    */
   public function bulkRollback(array $uids) {
     migrate_instrument_start('user_delete_multiple');
+    $this->prepareRollback($uids);
     user_delete_multiple($uids);
+    $this->completeRollback($uids);
     migrate_instrument_stop('user_delete_multiple');
   }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: term.inc,v 1.1.2.34 2010/12/22 03:16:06 mikeryan Exp $
+// $Id: term.inc,v 1.1.2.35 2011/01/30 16:51:54 mikeryan Exp $
 
 /**
  * @file
@@ -91,7 +91,9 @@ class MigrateDestinationTerm extends MigrateDestinationEntity {
     if (taxonomy_term_load($tid)) {
       migrate_instrument_stop('taxonomy_term_load');
       migrate_instrument_start('taxonomy_term_delete');
+      $this->prepareRollback($tid);
       $result = (bool) taxonomy_term_delete($tid);
+      $this->completeRollback($tid);
       migrate_instrument_stop('taxonomy_term_delete');
     }
     else {

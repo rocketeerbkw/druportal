@@ -1,5 +1,5 @@
 <?php
-// $Id: beer.install.inc,v 1.1.2.8 2010/12/24 14:58:41 mikeryan Exp $
+// $Id: beer.install.inc,v 1.1.2.9 2011/01/04 17:07:43 mikeryan Exp $
 
 /**
  * @file
@@ -489,7 +489,7 @@ function migrate_example_beer_gender() {
   if (!field_info_field('field_migrate_example_gender')) {
     $field = array(
       'field_name' => 'field_migrate_example_gender',
-      'type' => 'list',
+      'type' => 'list_integer',
       'settings' => array(
       'allowed_values' =>
         "0|Male\n".

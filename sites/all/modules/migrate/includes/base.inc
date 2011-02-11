@@ -1,5 +1,5 @@
 <?php
-// $Id: base.inc,v 1.1.2.30 2010/12/22 01:25:42 mikeryan Exp $
+// $Id: base.inc,v 1.1.2.34 2011/02/10 02:13:21 mikeryan Exp $
 
 /**
  * @file
@@ -227,6 +227,7 @@ abstract class MigrationBase {
   const STATUS_IMPORTING = 1;
   const STATUS_ROLLING_BACK = 2;
   const STATUS_STOPPING = 3;
+  const STATUS_DISABLED = 4;
 
   /**
    * Message types to be passed to saveMessage() and saved in message tables.
@@ -263,20 +264,25 @@ abstract class MigrationBase {
 
     // Record the memory limit in bytes
     $limit = trim(ini_get('memory_limit'));
-    $last = strtolower($limit[strlen($limit)-1]);
-    switch ($last) {
-      case 'g':
-        $limit *= 1024;
-      case 'm':
-        $limit *= 1024;
-      case 'k':
-        $limit *= 1024;
-        break;
-      default:
-        throw new Exception(t('Invalid PHP memory_limit !limit',
-          array('!limit' => $limit)));
+    if ($limit == '-1') {
+      $this->memoryLimit = PHP_INT_MAX;
     }
-    $this->memoryLimit = $limit;
+    else {
+      $last = strtolower($limit[strlen($limit)-1]);
+      switch ($last) {
+        case 'g':
+          $limit *= 1024;
+        case 'm':
+          $limit *= 1024;
+        case 'k':
+          $limit *= 1024;
+          break;
+        default:
+          throw new Exception(t('Invalid PHP memory_limit !limit',
+            array('!limit' => $limit)));
+      }
+      $this->memoryLimit = $limit;
+    }
 
     // Record the time limit
     $this->timeLimit = ini_get('max_execution_time');
@@ -367,8 +373,8 @@ abstract class MigrationBase {
    */
   static public function getInstance($machine_name, $class_name = NULL, array $arguments = array()) {
     // Otherwise might miss cache hit on case difference
-    $machine_name = strtolower($machine_name);
-    if (!isset(self::$migrations[$machine_name])) {
+    $machine_name_key = strtolower($machine_name);
+    if (!isset(self::$migrations[$machine_name_key])) {
       // Skip the query if our caller already made it
       if (!$class_name) {
         // See if we know about this migration
@@ -383,12 +389,13 @@ abstract class MigrationBase {
         }
         else {
           // Can't find a migration with this name
-          self::$migrations[$machine_name] = NULL;
+          throw new MigrateException(t('No migration found with machine name !machine',
+            array('!machine' => $machine_name)));
         }
       }
-      self::$migrations[$machine_name] = new $class_name($arguments);
+      self::$migrations[$machine_name_key] = new $class_name($arguments);
     }
-    return self::$migrations[$machine_name];
+    return self::$migrations[$machine_name_key];
   }
 
   /**
@@ -410,6 +417,21 @@ abstract class MigrationBase {
    *  Optional message severity (defaults to MESSAGE_ERROR).
    */
   public function saveMessage($message, $level = MigrationBase::MESSAGE_ERROR) {
+    switch ($level) {
+      case MigrationBase::MESSAGE_ERROR:
+        $level = 'error';
+        break;
+      case MigrationBase::MESSAGE_WARNING:
+        $level = 'warning';
+        break;
+      case MigrationBase::MESSAGE_NOTICE:
+        $level = 'notice';
+        break;
+      case MigrationBase::MESSAGE_INFORMATIONAL:
+        $level = 'status';
+        break;
+    }
+
     $this->showMessage($message, $level);
   }
 
@@ -419,9 +441,10 @@ abstract class MigrationBase {
    * @param string $message
    *  The message to output.
    * @param int $level
-   *  Optional message severity (defaults to MESSAGE_ERROR).
+   *  Optional message severity as understood by drupal_set_message and drush_log
+   *  (defaults to 'error').
    */
-  public function showMessage($message, $level = MigrationBase::MESSAGE_ERROR) {
+  public function showMessage($message, $level = 'error') {
     call_user_func($this->outputFunction, $message, $level);
   }
 
@@ -490,6 +513,9 @@ abstract class MigrationBase {
    *  One of the MigrationBase::STATUS_* constants
    */
   public function getStatus() {
+    if (!$this->enabled) {
+      return MigrationBase::STATUS_DISABLED;
+    }
     $status = db_select('migrate_status', 'ms')
               ->fields('ms', array('status'))
               ->condition('machine_name', $this->machineName)
