@@ -15,15 +15,13 @@ class DruportalUserMigration extends DruportalMigration {
 
     // Create a map object for tracking the relationships between source rows
     $this->map = new MigrateSQLMap($this->machineName,
-        array(
-          'member_id' => array('type' => 'int',
-                           'length' => 4,
-                           'not null' => TRUE,
-                           'description' => 'Member ID',
-                          ),
-        ),
-        MigrateDestinationUser::getKeySchema()
-      );
+      array('member_id' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Member ID'
+      )),
+      MigrateDestinationUser::getKeySchema()
+    );
 
     $file = isset($arguments['source_file']) ? $arguments['source_file'] : DRUPAL_ROOT . '/portal_members.csv';
 
@@ -33,11 +31,10 @@ class DruportalUserMigration extends DruportalMigration {
     $this->destination = new MigrateDestinationUser();
 
     // Mapped Fields
-    $this->addFieldMapping('name', 'm_username');
+    $this->addFieldMapping('name', 'm_name')
+         ->dedupe('users', 'name');
     $this->addFieldMapping('pass', 'm_password');
     $this->addFieldMapping('mail', 'm_email');
-    $this->addFieldMapping('roles')
-         ->defaultValue(drupal_map_assoc(array(2)));
     $this->addFieldMapping('signature', 'm_sig');
     $this->addFieldMapping('created', 'm_date');
     $this->addFieldMapping('access', 'm_lastheredate');
@@ -45,6 +42,8 @@ class DruportalUserMigration extends DruportalMigration {
     $this->addFieldMapping('status', 'm_status');
 
     // Unmapped destination fields
+    $this->addFieldMapping('roles')
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping('theme')
          ->issueGroup(t('DNM'));
     $this->addFieldMapping('signature_format')
@@ -138,5 +137,8 @@ class DruportalUserMigration extends DruportalMigration {
     // Convert dates from SkyPortal(TM) to unix epoch
     $row->m_date = $this->spDateConvert($row->m_date);
     $row->m_lastheredate = $this->spDateConvert($row->m_lastheredate);
+
+    // Signature can't be more than 255 characters long
+    $row->m_sig = substr($row->m_sig, 0, 255);
   }
 }
