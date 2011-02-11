@@ -1,0 +1,8 @@
+name = "Druportal Migrate"
+description = "Provides ability to migrate data from SkyPortal<sup>TM</sup>"
+package = "Druportal"
+core = 7.x
+dependencies[] = migrate
+
+files[] = druportal_migrate.module
+files[] = migrate.users.inc

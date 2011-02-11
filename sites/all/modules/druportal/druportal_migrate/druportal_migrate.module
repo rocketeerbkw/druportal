@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * Implementation of hook_migrate_api().
+ */
+function druportal_migrate_migrate_api() {
+  $api = array(
+    'api' => 2,
+  );
+  return $api;
+}
+
+/**
+ * Create base class for all druportal migrations to extend from
+ */
+abstract class DruportalMigration extends Migration {
+  public function __construct() {
+    parent::__construct();
+    $this->team = array(
+      new MigrateTeamMember('Brandon Williams', 'rocketeerbkw@gmail.com', t('Developer')),
+    );
+    $this->issuePattern = 'http://drupal.org/node/:id:';
+  }
+
+  /**
+   * Convert dates stored in Skyportal(TM) to unix epoch timestamp
+   */
+  public function spDateConvert($date) {
+    // SP stores (or access exports) dates like this 20061016013032
+    // which is the same as 2006/10/16 01:30:32
+    $year   = $date[0] . $date[1] . $date[2] . $date[3];
+    $month  = $date[4] . $date[5];
+    $day    = $date[6] . $date[7];
+    $hour   = $date[8] . $date[9];
+    $min    = $date[10] . $date[11];
+    $sec    = $date[12] . $date[13];
+
+    return strtotime($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min . ':' . $sec);
+  }
+}
