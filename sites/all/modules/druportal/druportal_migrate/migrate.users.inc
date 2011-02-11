@@ -11,6 +11,7 @@ class DruportalUserMigration extends DruportalMigration {
     $this->arguments = $arguments;
 
     parent::__construct();
+    $this->machineName = 'SkyPortal_Members';
     $this->description = t('Import members from SkyPortal<sup>TM</sup>');
 
     // Create a map object for tracking the relationships between source rows
@@ -134,6 +135,11 @@ class DruportalUserMigration extends DruportalMigration {
   }
 
   function prepareRow($row) {
+    // Check for CSV header row
+    if (strtolower($row->member_id) == 'member_id') {
+      return FALSE;
+    }
+
     // Convert dates from SkyPortal(TM) to unix epoch
     $row->m_date = $this->spDateConvert($row->m_date);
     $row->m_lastheredate = $this->spDateConvert($row->m_lastheredate);
