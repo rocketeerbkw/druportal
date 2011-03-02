@@ -176,3 +176,124 @@ class DruportalForumMigration extends DruportalMigration {
     }
   }
 }
+
+class DruportalForumTopicMigration extends DruportalMigration {
+  public function __construct(array $arguments) {
+    // When run from drush, the path to the file may be passed as an argument
+    $this->arguments = $arguments;
+
+    parent::__construct();
+    $this->description = t('Import forum topics from SkyPortal<sup>TM</sup>');
+
+    $this->dependencies = array('DruportalForum', 'DruportalUser');
+
+    // Create a map object for tracking the relationships between source rows
+    $this->map = new MigrateSQLMap($this->machineName,
+      array('topic_id' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Topic ID'
+      )),
+      MigrateDestinationNode::getKeySchema()
+    );
+
+    $file = isset($arguments['source_file']) ? $arguments['source_file'] : DRUPAL_ROOT . '/portal_topics.csv';
+
+    // Create a MigrateSource object, which manages retrieving the input data.
+    $this->source = new DruportalMigrateSourceCSV($file, $this->csvColumns());
+
+    $this->destination = new MigrateDestinationNode('forum');
+
+    // Mapped fields
+    $this->addFieldMapping('uid', 't_author')
+         ->sourceMigration('DruportalUser')
+         ->defaultValue(1);
+    $this->addFieldMapping('created', 't_date');
+    $this->addFieldMapping('changed', 't_date');
+    $this->addFieldMapping('promote', 't_news');
+    $this->addFieldMapping('sticky', 't_inplace');
+    $this->addFieldMapping('title', 't_subject');
+    $this->addFieldMapping('body', 't_message');
+    // Term mapping
+    $this->addFieldMapping('taxonomy_forums', 'forum_id')
+         ->sourceMigration('DruportalForum')
+         ->arguments(array('source_type' => 'tid'));
+    $this->addFieldMapping('comment', 't_status');
+
+    // Unmapped destination fields
+    $this->addFieldMapping('is_new')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('revision_uid')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('status')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('revision')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('language')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('path')
+         ->issueGroup(t('DNM'));
+
+    // Unmapped source fields
+    $this->addFieldMapping(NULL, 'cat_id')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_ip')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_last_post')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_last_post_author')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_last_poster')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_mail')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_msgicon')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_poll')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_replies')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_sig')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 't_view_count')
+         ->issueGroup(t('DNM'));
+  }
+
+  function csvColumns() {
+    $columns[0] = array('cat_id', 'Category ID');
+    $columns[1] = array('forum_id', 'Forum ID');
+    $columns[2] = array('t_author', 'Topic Author ID');
+    $columns[3] = array('t_date', 'Date topic created');
+    $columns[4] = array('t_inplace', 'Topic Sticky');
+    $columns[5] = array('t_ip', 'IP address of author');
+    $columns[6] = array('t_last_post', 'Date of last post (topic created or last reply)');
+    $columns[7] = array('t_last_post_author', 'Author of last post (topic created or last reply)');
+    $columns[8] = array('t_last_poster', '');
+    $columns[9] = array('t_mail', '');
+    $columns[10] = array('t_message', 'Topic Body');
+    $columns[11] = array('t_msgicon', '');
+    $columns[12] = array('t_news', 'Topic is News');
+    $columns[13] = array('t_poll', 'Topic is Poll');
+    $columns[14] = array('t_replies', 'Number of replies to topic');
+    $columns[15] = array('t_sig', '');
+    $columns[16] = array('t_status', 'Topic Locked');
+    $columns[17] = array('t_subject', 'Topic Title');
+    $columns[18] = array('t_view_count', 'Number of views for topic');
+    $columns[19] = array('topic_id', 'Topic ID');
+
+    return $columns;
+  }
+
+  function prepareRow($row) {
+    // Check for CSV header row
+    if (strtolower($row->cat_id) == 'cat_id') {
+      return FALSE;
+    }
+
+    // Convert dates from SkyPortal(TM) to unix epoch
+    $row->t_date = $this->spDateConvert($row->t_date);
+
+    // t_status is OFF (0) or ON (1), but comment is OFF (0) Read Only (1) Read/Write (2)
+    $row->t_status = $row->t_status ? 2 : 1;
+  }
+}
