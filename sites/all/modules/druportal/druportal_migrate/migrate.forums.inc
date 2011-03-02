@@ -297,3 +297,100 @@ class DruportalForumTopicMigration extends DruportalMigration {
     $row->t_status = $row->t_status ? 2 : 1;
   }
 }
+
+class DruportalForumReplyMigration extends DruportalMigration {
+  public function __construct(array $arguments) {
+    // When run from drush, the path to the file may be passed as an argument
+    $this->arguments = $arguments;
+
+    parent::__construct();
+    $this->description = t('Import forum replies from SkyPortal<sup>TM</sup>');
+
+    $this->dependencies = array('DruportalForumTopic');
+
+    // Create a map object for tracking the relationships between source rows
+    $this->map = new MigrateSQLMap($this->machineName,
+      array('reply_id' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'Topic ID'
+      )),
+      MigrateDestinationComment::getKeySchema()
+    );
+
+    $file = isset($arguments['source_file']) ? $arguments['source_file'] : DRUPAL_ROOT . '/portal_reply.csv';
+
+    // Create a MigrateSource object, which manages retrieving the input data.
+    $this->source = new DruportalMigrateSourceCSV($file, $this->csvColumns());
+
+    $this->destination = new MigrateDestinationComment('comment_node_forum');
+
+    // Mapped fields
+    $this->addFieldMapping('nid', 'topic_id')
+         ->sourceMigration('DruportalForumTopic');
+    $this->addFieldMapping('uid', 'r_author')
+         ->sourceMigration('DruportalUser');
+    $this->addFieldMapping('hostname', 'r_ip');
+    $this->addFieldMapping('created', 'r_date');
+    $this->addFieldMapping('changed', 'r_date');
+    $this->addFieldMapping('comment_body', 'r_message');
+
+    // Unmapped destination fields
+    $this->addFieldMapping('pid')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('subject')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('status')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('thread')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('name')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('mail')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('homepage')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('language')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping('path')
+         ->issueGroup(t('DNM'));
+
+    // Unmapped source fields
+    $this->addFieldMapping(NULL, 'cat_id')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 'forum_id')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 'r_mail')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 'r_msgicon')
+         ->issueGroup(t('DNM'));
+    $this->addFieldMapping(NULL, 'r_sig')
+         ->issueGroup(t('DNM'));
+  }
+
+  function csvColumns() {
+    $columns[0] = array('cat_id', 'Category ID');
+    $columns[1] = array('forum_id', 'Forum ID');
+    $columns[2] = array('r_author', 'Reply Author');
+    $columns[3] = array('r_date', 'Reply Date');
+    $columns[4] = array('r_ip', 'IP address of author');
+    $columns[5] = array('r_mail', '');
+    $columns[6] = array('r_message', 'Reply Message');
+    $columns[7] = array('r_msgicon', '');
+    $columns[8] = array('r_sig', '');
+    $columns[9] = array('reply_id', 'Reply ID');
+    $columns[10] = array('topic_id', 'Topic ID');
+
+    return $columns;
+  }
+
+  function prepareRow($row) {
+    // Check for CSV header row
+    if (strtolower($row->cat_id) == 'cat_id') {
+      return FALSE;
+    }
+
+    // Convert dates from SkyPortal(TM) to unix epoch
+    $row->r_date = $this->spDateConvert($row->r_date);
+  }
+}
