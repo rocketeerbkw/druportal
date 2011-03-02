@@ -1,2 +1,4 @@
 files
 settings.php
+*.csv
+*.xlsx
