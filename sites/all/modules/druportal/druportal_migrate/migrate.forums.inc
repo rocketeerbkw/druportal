@@ -34,7 +34,7 @@ class DruportalForumCategoryMigration extends DruportalMigration {
     $file = isset($arguments['source_file']) ? $arguments['source_file'] : DRUPAL_ROOT . '/portal_category.csv';
 
     // Create a MigrateSource object, which manages retrieving the input data.
-    $this->source = new MigrateSourceCSV($file, $this->csvColumns());
+    $this->source = new DruportalMigrateSourceCSV($file, $this->csvColumns());
 
     $this->destination = new MigrateDestinationTerm('forums');
 
