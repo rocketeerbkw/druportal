@@ -57,7 +57,7 @@ class DruportalForumCategoryMigration extends DruportalMigration {
     // Unmapped source fields
     $this->addFieldMapping(NULL, 'cat_status')
          ->description(t('Indicates of category is locked.'))
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
   }
 
   function csvColumns() {
@@ -121,30 +121,30 @@ class DruportalForumMigration extends DruportalMigration {
 
     // Unmapped source fields
     $this->addFieldMapping(NULL, 'f_count')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_ip')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_last_post')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_last_post_author')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_mail')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_password_new')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_privateforums')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_status')
          ->description(t('Indicates of forum is locked.'))
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_topics')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_type')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'f_url')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
     $this->addFieldMapping(NULL, 'l_archive')
-         ->issueGroup(t('DNN'));
+         ->issueGroup(t('DNM'));
   }
 
   function csvColumns() {

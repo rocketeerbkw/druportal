@@ -37,15 +37,6 @@ abstract class DruportalMigration extends Migration {
 
     return strtotime($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min . ':' . $sec);
   }
-
-  /**
-   * Returns correct number of rows in CSV file depending on presence of header row
-   */
-  public function csvCount($file) {
-    // TODO. If this takes too much time/memory, use exec('wc -l')
-    $count = count(file($file));
-    return $count;
-  }
 }
 
 class DruportalMigrateSourceCSV extends MigrateSourceCSV {
