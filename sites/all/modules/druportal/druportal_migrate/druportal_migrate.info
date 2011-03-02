@@ -6,3 +6,4 @@ dependencies[] = migrate
 
 files[] = druportal_migrate.module
 files[] = migrate.users.inc
+files[] = migrate.forums.inc
