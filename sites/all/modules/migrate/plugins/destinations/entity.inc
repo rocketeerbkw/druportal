@@ -1,5 +1,5 @@
 <?php
-// $Id: entity.inc,v 1.1.2.30 2011/01/30 16:51:54 mikeryan Exp $
+// $Id: entity.inc,v 1.1.2.31 2011/02/12 20:35:46 mikeryan Exp $
 
 /**
  * @file
@@ -168,5 +168,4 @@ abstract class MigrateDestinationEntity extends MigrateDestination {
       $migration->complete($entity, $source_row);
     }
   }
-
 }

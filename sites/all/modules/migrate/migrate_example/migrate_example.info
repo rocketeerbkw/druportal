@@ -21,8 +21,8 @@ files[] = wine.inc
 ; files[] = example.table_copy.inc
 
 ; Information added by drupal.org packaging script on January 1, 1970 - 00:00
-version = "7.x-2.0-rc1"
+version = "7.x-2.0-rc2"
 core = "7.x"
 project = "migrate"
-datestamp = "1297304541"
+datestamp = "1297637524"
 

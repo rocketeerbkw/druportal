@@ -1,5 +1,5 @@
 <?php
-// $Id: sql.inc,v 1.1.2.33 2011/01/25 19:45:29 mikeryan Exp $
+// $Id: sql.inc,v 1.1.2.34 2011/02/10 14:19:04 mikeryan Exp $
 
 /**
  * @file
@@ -394,7 +394,7 @@ class MigrateSourceSQL extends MigrateSource {
 
       // Add some debugging, just for the first row.
       if (empty($this->numProcessed)) {
-        $migration->showMessage(print_r($this->currentRow, TRUE));
+        $migration->showMessage(print_r($this->currentRow, TRUE), 'debug');
       }
 
       // Allow the Migration to prepare this row. prepareRow() can return boolean
