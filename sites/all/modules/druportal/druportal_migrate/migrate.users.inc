@@ -11,7 +11,6 @@ class DruportalUserMigration extends DruportalMigration {
     $this->arguments = $arguments;
 
     parent::__construct();
-    $this->machineName = 'SkyPortal_Members';
     $this->description = t('Import members from SkyPortal<sup>TM</sup>');
 
     // Create a map object for tracking the relationships between source rows
@@ -50,11 +49,11 @@ class DruportalUserMigration extends DruportalMigration {
     $this->addFieldMapping('signature_format')
          ->issueGroup(t('DNM'));
     $this->addFieldMapping('timezone')
-         ->issueGroup(t('DNM'));
+         ->issueGroup(t('TODO'));
     $this->addFieldMapping('language')
-         ->issueGroup(t('DNM'));
+         ->issueGroup(t('TODO'));
     $this->addFieldMapping('picture')
-         ->issueGroup(t('DNM'));
+         ->issueGroup(t('TODO'));
     $this->addFieldMapping('init')
        ->issueGroup(t('DNM'));
 
