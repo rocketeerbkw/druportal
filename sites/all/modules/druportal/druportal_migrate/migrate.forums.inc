@@ -75,6 +75,57 @@ class DruportalForumCategoryMigration extends DruportalMigration {
       return FALSE;
     }
   }
+
+  function postImport() {
+    parent::postImport();
+
+    $mapTable = $this->map->getMapTable();
+
+    // Get current containers
+    $current_containers = variable_get('forum_containers', array());
+
+    // Get IDs of of all categories that were imported
+    $result = db_query('select destid1 from ' . $mapTable);
+    $new_containers = $result->fetchCol();
+
+    $containers = array_merge($current_containers, $new_containers);
+    variable_set('forum_containers', $containers);
+  }
+
+  /*
+   * @TODO Re-enable these when http://drupal.org/node/1079416 is fixed
+  function preRollback() {
+    parent::preRollback();
+
+    $mapTable = $this->map->getMapTable();
+
+    // Get IDs of all categories that were imported
+    $result = db_query('select destid1 from ' . $mapTable);
+    $imported_containers = $result->fetchCol();
+
+    // Save these for postRollback()
+    $this->imported_containers = $imported_containers;
+  }
+
+  function postRollback() {
+    parent::postRollback();
+
+    echo 'postRollback' . PHP_EOL;
+
+    // Get current containers
+    $current_containers = variable_get('forum_containers', array());
+    print_r($current_containers); echo PHP_EOL;
+
+    print_r($this->imported_containers); PHP_EOL;
+
+    // Remove any containers from this list that were imported
+    $containers = array_diff($current_containers, $this->imported_containers);
+    print_r($containers); echo PHP_EOL;
+
+    variable_set('forum_containers', $containers);
+  }
+
+  */
 }
 
 class DruportalForumMigration extends DruportalMigration {
