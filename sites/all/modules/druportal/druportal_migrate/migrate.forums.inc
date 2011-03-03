@@ -157,7 +157,8 @@ class DruportalForumMigration extends DruportalMigration {
 
     // Mapped fields
     $this->addFieldMapping('name', 'f_subject');
-    $this->addFieldMapping('description', 'f_description');
+    $this->addFieldMapping('description', 'f_description')
+         ->arguments(array('format' => array('name' => 'filtered_html')));
     $this->addFieldMapping('weight', 'forum_order');
     $this->addFieldMapping('parent', 'cat_id')
          ->sourceMigration('DruportalForumCategory');
@@ -264,7 +265,8 @@ class DruportalForumTopicMigration extends DruportalMigration {
     $this->addFieldMapping('promote', 't_news');
     $this->addFieldMapping('sticky', 't_inplace');
     $this->addFieldMapping('title', 't_subject');
-    $this->addFieldMapping('body', 't_message');
+    $this->addFieldMapping('body', 't_message')
+         ->arguments(array('format' => array('name' => 'filtered_html')));
     // Term mapping
     $this->addFieldMapping('taxonomy_forums', 'forum_id')
          ->sourceMigration('DruportalForum')
@@ -384,7 +386,8 @@ class DruportalForumReplyMigration extends DruportalMigration {
     $this->addFieldMapping('hostname', 'r_ip');
     $this->addFieldMapping('created', 'r_date');
     $this->addFieldMapping('changed', 'r_date');
-    $this->addFieldMapping('comment_body', 'r_message');
+    $this->addFieldMapping('comment_body', 'r_message')
+         ->arguments(array('format' => array('name' => 'filtered_html')));
 
     // Unmapped destination fields
     $this->addFieldMapping('pid')
